@@ -3,9 +3,9 @@
 
 # User-specific stuff
 .idea
-.v
-/.v
-.v/
+v
+v/
+
 /.idea
 .idea/
 cmake-build-debug/
