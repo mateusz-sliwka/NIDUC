@@ -28,7 +28,6 @@ def transmission(array2, arraysize, distruptiondegree):
         while (not done):
             bit = random.randint(0, arraysize - 1)  # wylosowanie numeru bitu z zakresu (0,ostatni bit obrazu)
             if (bits.count(bit) == 0):  # jezeli dany bit nie zostal wczesniej  wylosowany to:
-                done = True
                 bits.append(bit)  # 1. dodajemy go do tablicy wylosowanych bitow
                 if array[bit] == 1:  # 2. negujemy bit o tym numerze w obrazie
                     array[bit] = 0;
