@@ -43,7 +43,7 @@ version.grid(row=0, column=0, sticky=tk.NW)
 author = tk.Label(ramka4, text="Karasek, Kamieniecki, Śliwka", fg="grey", anchor="e", width=30)
 author.grid(row=0, column=1, sticky=tk.NW)
 
-label1 = tk.Label(ramka4, text="Podgląd obrazu", fg="black", width=28, anchor="center", font=('Verdana', 15, 'bold'))3
+label1 = tk.Label(ramka4, text="Podgląd obrazu", fg="black", width=28, anchor="center", font=('Verdana', 15, 'bold'))
 label1.grid(row=1, column=0)
 
 label2 = tk.Label(ramka4, text="Zródło obrazu: ", fg="black", width=30, anchor="w", font=('Verdana', 15, 'bold'))
