@@ -3,7 +3,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import disruptor
+import disrupter
 import os
 import numpy as np
 from tkinter.filedialog import askopenfilename
@@ -96,7 +96,7 @@ def send(algorytm,stopien):
         print("Algorytm scramblowania: algorytm2")
     print("Stopien zaklocenia: "+stopien+"%")
     print("=====================")
-    disruptor.disrupt(signal,stopien)
+    disrupter.disrupt(signal, stopien)
 
 window = tk.Tk()
 window.title("Nadawca sygnału")
