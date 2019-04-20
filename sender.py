@@ -93,7 +93,7 @@ def send(algorytm,stopien):
     if (algorytm.get() == 1):
         print("Algorytm scramblowania: algorytm2")
     print("Stopien zaklocenia: "+stopien+"%")
-    print("================")
+    print("=====================")
 
 window = tk.Tk()
 window.title("Nadawca sygnału")
