@@ -5,7 +5,8 @@
 .idea
 v
 v/
-
+__pycache__
+__pycache__/
 /.idea
 .idea/
 cmake-build-debug/
