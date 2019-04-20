@@ -3,6 +3,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+import disruptor
 import os
 import numpy as np
 from tkinter.filedialog import askopenfilename
@@ -33,6 +34,7 @@ def imgfromfile():
     nooptions()
     filename = askopenfilename(initialdir="/", title="Select file")
     image = Image.open(filename).resize((250, 250))
+    image=image.convert('1')
     photo = ImageTk.PhotoImage(image)
     global label
     label = Label(ramka6, image=photo, borderwidth=2, relief="groove")
@@ -94,6 +96,7 @@ def send(algorytm,stopien):
         print("Algorytm scramblowania: algorytm2")
     print("Stopien zaklocenia: "+stopien+"%")
     print("=====================")
+    disruptor.disrupt(signal,stopien)
 
 window = tk.Tk()
 window.title("Nadawca sygnału")
@@ -154,3 +157,4 @@ ramka3.grid(column=0, row=1)
 
 
 window.mainloop()
+
