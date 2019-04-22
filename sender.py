@@ -6,6 +6,7 @@ import matplotlib.cm as cm
 import distrupter
 import os
 import numpy as np
+from random import shuffle
 from tkinter.filedialog import askopenfilename
 
 
@@ -74,6 +75,8 @@ def generateimg(first, second):
             kontrolka -= 1
         else:
             value.append(1)
+
+    shuffle(value)
     global signal
     signal = value.copy()
     plt.imsave('temp_img.png', np.array(value).reshape(first,first), cmap=cm.gray)
