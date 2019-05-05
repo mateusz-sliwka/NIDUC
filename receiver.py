@@ -44,6 +44,14 @@ class receiver:
                 scramblingresult - puresignaldisruptedresult))
 
         def array_vs_array(array1, array2): #zestawienie dwoch sygnalow, pokazanie roznic
+            array2=array2.signal
+            licznik = 0
+            for i in range(len(array1)):
+                if (array1[i] != array2[i]):
+                    licznik += 1
+            return licznik
+
+        def array_vs_array2(array1, array2):  # zestawienie dwoch sygnalow, pokazanie roznic
             licznik = 0
             for i in range(len(array1)):
                 if (array1[i] != array2[i]):
@@ -86,6 +94,7 @@ class receiver:
             label2.grid(column=0, row=1, sticky=tk.N)
 
         def receive_descrambled(value): #wypelnienie miejsca na sygnal po descramblingu
+            value = value.signal
             plt.imsave('imgs/received_withscrl',
                        np.array(value).reshape(int(math.sqrt(len(value))), int(math.sqrt(len(value)))), cmap=cm.gray)
             image = Image.open("imgs/received_withscrl.png").resize((250, 250))
@@ -123,7 +132,7 @@ class receiver:
         # obrazek1
         label4 = tk.Label(ramka2, text="Stopień zakłócenia: " + degree + "%")
         label4.grid(row=2, column=0)
-        result = array_vs_array(puresignal, puresignaldisrupted)
+        result = array_vs_array2(puresignal, puresignaldisrupted)
         puresignaldisruptedresult = result * 100 / len(puresignal)
         label5 = tk.Label(ramka2, text="Ilość zniekształconych bitów: " + str(result) + "\nStanowią one " + str(
             result * 100 / len(puresignal)) + " % sygnału")

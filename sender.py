@@ -91,11 +91,11 @@ class sender:
             print(signal)
             print("O dlugosci: " + str(len(signal)))
             if (algorytm.get() == 0):
-                print("Algorytm scramblowania: algorytm1")
-                algo = "algorytm1"
+                print("Algorytm scramblowania: B8ZS")
+                algo = "B8ZS"
             if (algorytm.get() == 1):
-                algo = "algorytm2"
-                print("Algorytm scramblowania: algorytm2")
+                algo = "HDB3"
+                print("Algorytm scramblowania: HDB3")
             print("Stopien zaklocenia: " + stopien + "%")
             print("=====================")
             window.destroy()
@@ -135,9 +135,9 @@ class sender:
         labka = tk.Label(frame2, text="Rodzaj scramblingu: ", fg="black", width=30, anchor="w",
                          font=('Verdana', 15, 'bold'))
         labka.grid(row=7, column=0, sticky=tk.NW, pady=20)
-        button11 = tk.Radiobutton(frame2, text="Algorytm1", variable=algorytm, value=0, anchor="w", height=2)
+        button11 = tk.Radiobutton(frame2, text="B8ZS", variable=algorytm, value=0, anchor="w", height=2)
         button11.grid(row=8, column=0, sticky=tk.NW)
-        button12 = tk.Radiobutton(frame2, text="Algorytm2", variable=algorytm, value=1, anchor="w", height=2)
+        button12 = tk.Radiobutton(frame2, text="HDB3", variable=algorytm, value=1, anchor="w", height=2)
         button12.grid(row=9, column=0, sticky=tk.NW)
         button13 = tk.Button(frame2, text="Wyślij", height=3, width=15, fg="#FFFFFF", highlightbackground="#000000",
                              command=lambda: send(algorytm, entry1.get()))
