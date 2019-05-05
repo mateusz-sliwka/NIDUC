@@ -1,7 +1,7 @@
 import array
 
 class Signal:
-    def _init_(self, signal):
+    def __init__(self, signal):
         self.signal = signal
         self.voltage = array.array('B', ['Z' * len(signal)])
         i = 0
