@@ -32,11 +32,11 @@ def distruption(signal):  # metoda zaklocajaca sygnal
                 j+=1
             for j in range(len(n_b)):
                 if distruptedsignal.signal[n_b[j]] == '1':
-                    distruptedsignal.signal[n_b[j]] == '0'
-                    distruptedsignal.voltage[n_b[j]] == 'Z'
+                    distruptedsignal.signal[n_b[j]] = '0'
+                    distruptedsignal.voltage[n_b[j]] = 'Z'
                 else:
-                    distruptedsignal.signal[n_b[j]] == '1'
-                    distruptedsignal.voltage[n_b[j]] == 'H'
+                    distruptedsignal.signal[n_b[j]] = '1'
+                    distruptedsignal.voltage[n_b[j]] = 'H'
         i+=1
     print("\n =====ZAKLOCANIE SYGNALU====")
     print("Sygnal przed zakoceniem:" + signal)
@@ -74,10 +74,10 @@ def distruption2(signal):  # metoda zaklocajaca sygnal
                 j+=1
             for j in range(len(n_b)):
                 if distruptedsignal[n_b[j]] == '1':
-                    distruptedsignal[n_b[j]] == '0'
+                    distruptedsignal[n_b[j]] = '0'
 
                 else:
-                    distruptedsignal[n_b[j]] == '1'
+                    distruptedsignal[n_b[j]] = '1'
         i += 1
     print("\n =====ZAKLOCANIE SYGNALU====")
     print("Sygnal przed zakoceniem:" + signal)
