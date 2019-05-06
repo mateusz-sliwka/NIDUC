@@ -85,7 +85,7 @@ class sender:
             lab.image = photo
             lab.grid(column=0, row=2, sticky=tk.N)
 
-        def send(algorytm, stopien): #przeslanie obrazu z programu nadawczego do kanalu transmisyjnego
+        def send(algorytm): #przeslanie obrazu z programu nadawczego do kanalu transmisyjnego
             print("=====WYSYLKA SYGNALU Z PROGRAMU NADAWCZEGO====")
             print("Sygnal do scramblingu: ")
             print(signal)
@@ -96,10 +96,9 @@ class sender:
             if (algorytm.get() == 1):
                 algo = "HDB3"
                 print("Algorytm scramblowania: HDB3")
-            print("Stopien zaklocenia: " + stopien + "%")
             print("=====================")
             window.destroy()
-            transmitter.transmitter(signal, stopien, algo)
+            transmitter.transmitter(signal,algo)
 
         frame4 = tk.Frame()
         version = tk.Label(frame4, text="Scrambler sender v0.0", fg="grey", width=30, anchor="w")
@@ -146,11 +145,7 @@ class sender:
         frame6 = tk.Frame(frame4)
         coloredimg()
         frame5 = tk.Frame(frame6)
-        entry1 = Entry(frame5, width=5)
-        entry1.grid(row=0, column=0, sticky=tk.NW)
-        entry1.insert(END, '0')
-        text1 = Label(frame5, text="% zakłocenia sygnału")
-        text1.grid(row=0, column=1, sticky=tk.NW)
+
         frame5.grid(column=0, row=3, pady=10, sticky=tk.N)
         frame6.grid(column=0, row=2, sticky=tk.N)
         frame4.grid(column=0, row=0, sticky=tk.N)

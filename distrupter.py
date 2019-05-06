@@ -1,12 +1,12 @@
-from Signal import Signal
+
 import math
 import random
-
+import Signal
 
 def distruption(signal):  # metoda zaklocajaca sygnal
     #Początkowe prawdopodobienstwo p
     p = 0.0414
-    distruptedsignal= Signal(signal)
+    distruptedsignal = signal
     #Lista ktora bedzie zawierac indeksy poczatku oraz konca ciagu tych samych znakow
     b_e = []
     #Lista ktora bedzie zawierac losowo miejsca zaklocen sygnalu
@@ -42,4 +42,47 @@ def distruption(signal):  # metoda zaklocajaca sygnal
     print("Sygnal po zaklocenie:" + ''.join(str(item) for item in distruptedsignal.signal))
     print("=====================")
     return distruptedsignal
-distruption("11111111")
+
+
+def distruption2(signal):  # metoda zaklocajaca sygnal
+    # Początkowe prawdopodobienstwo p
+    p = 0.0414
+    distruptedsignal = signal
+    # Lista ktora bedzie zawierac indeksy poczatku oraz konca ciagu tych samych znakow
+    b_e = []
+    # Lista ktora bedzie zawierac losowo miejsca zaklocen sygnalu
+    n_b = []
+    print(len(distruptedsignal))
+    for i in range(len(distruptedsignal)):
+        b_e.append(i)
+        while distruptedsignal[i] == distruptedsignal[i]:
+            print(i+1)
+            if i < len(distruptedsignal) - 1:
+                i += 1
+            else:
+                break
+        b_e.append(i)
+        # Zaklocanie odbywa sie jezeli pojawi sie ciag powyzej 4 takich samych znakow
+        if b_e[1] - b_e[0] >= 4:
+            j = 0
+            while j <= b_e[1] - b_e[0] - 4:
+                j += 1
+            p = p + j * 0.000012
+            p = math.ceil(p * (b_e[1] - b_e[0]))
+            j = 0
+            while j < p:
+                n_b.append(random.randint(b_e[0], b_e[1]))
+            for j in range(len(n_b)):
+                if distruptedsignal[n_b[j]] == '1':
+                    distruptedsignal[n_b[j]] == '0'
+
+                else:
+                    distruptedsignal[n_b[j]] == '1'
+
+        i += 1
+    print("\n =====ZAKLOCANIE SYGNALU====")
+    print("Sygnal przed zakoceniem:" + ''.join(str(item) for item in signal))
+    print("Sygnal po zaklocenie:" + ''.join(str(item) for item in distruptedsignal))
+    print("=====================")
+    return distruptedsignal
+distruption2("11111111")

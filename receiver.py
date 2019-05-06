@@ -10,7 +10,7 @@ import numpy as np
 
 
 class receiver:
-    def __init__(self, puresignal, puresignaldisrupted, descrambled, algorythm, degree, scrambled, scrambleddisrupted):
+    def __init__(self, puresignal, puresignaldisrupted, descrambled, algorythm, scrambled, scrambleddisrupted):
         window2 = tk.Tk()
         window2.title("Odbiorca sygnału")
         window2.geometry("900x520")
@@ -130,8 +130,7 @@ class receiver:
         label2 = tk.Label(ramka2, text="Odebrany niescramblowany obraz")
         label2.grid(row=0, column=0)
         # obrazek1
-        label4 = tk.Label(ramka2, text="Stopień zakłócenia: " + degree + "%")
-        label4.grid(row=2, column=0)
+
         result = array_vs_array2(puresignal, puresignaldisrupted)
         puresignaldisruptedresult = result * 100 / len(puresignal)
         label5 = tk.Label(ramka2, text="Ilość zniekształconych bitów: " + str(result) + "\nStanowią one " + str(
@@ -143,7 +142,7 @@ class receiver:
         label3.grid(row=0, column=0)
         # obrazek1
         result2 = array_vs_array(puresignal, descrambled)
-        label9 = tk.Label(ramka3, text="Metoda scramblingu: " + algorythm + "\nStopień zakłócenia: " + degree + "%")
+        label9 = tk.Label(ramka3, text="Metoda scramblingu: " + algorythm)
         label9.grid(row=2, column=0)
         scramblingresult = result2 * 100 / len(puresignal)
         label10 = tk.Label(ramka3, text="Ilość zniekształconych bitów: " + str(result2) + "\nStanowią one " + str(
