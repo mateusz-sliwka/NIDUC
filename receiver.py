@@ -75,7 +75,12 @@ class receiver:
             label.image = photo
             label.grid(column=0, row=1, sticky=tk.N)
 
-        def receive_puresignal(value): #wypelnienie miejsca na sygnal wysylany
+        def receive_puresignal(value2): #wypelnienie miejsca na sygnal wysylany
+            value=[]
+            for i in range(len(value2)):
+                value.append(value2[i])
+
+
             plt.imsave('imgs/received_puresignal.png',
                        np.array(value).reshape(int(math.sqrt(len(value))), int(math.sqrt(len(value)))), cmap=cm.gray)
             image = Image.open("imgs/received_puresignal.png").resize((250, 250))
@@ -85,18 +90,23 @@ class receiver:
             label.grid(column=0, row=1, sticky=tk.N)
 
         def receive_puresignaldisrupted(value): #wyplenienie miejsca na signal zaklocony niescramblowany
-            plt.imsave('imgs/received_withoutscr.png',
-                       np.array(value).reshape(int(math.sqrt(len(value))), int(math.sqrt(len(value)))), cmap=cm.gray)
+            for i in range (len(value)):
+                value[i]=int(value[i])
+            print(value)
+
+            plt.imsave('imgs/received_withoutscr.png',np.array(value).reshape(int(math.sqrt(len(value))), int(math.sqrt(len(value)))), cmap=cm.gray)
             image = Image.open("imgs/received_withoutscr.png").resize((250, 250))
             photo = ImageTk.PhotoImage(image)
             label2 = Label(ramka2, image=photo, borderwidth=2, relief="groove")
             label2.image = photo
             label2.grid(column=0, row=1, sticky=tk.N)
 
-        def receive_descrambled(value): #wypelnienie miejsca na sygnal po descramblingu
-            value = value.signal
-            plt.imsave('imgs/received_withscrl',
-                       np.array(value).reshape(int(math.sqrt(len(value))), int(math.sqrt(len(value)))), cmap=cm.gray)
+        def receive_descrambled(value2): #wypelnienie miejsca na sygnal po descramblingu
+            value=value2.signal
+            for i in range(len(value)):
+                value[i] = int(value[i])
+            print(value)
+            plt.imsave('imgs/received_withscrl.png', np.array(value).reshape(int(math.sqrt(len(value))), int(math.sqrt(len(value)))), cmap=cm.gray)
             image = Image.open("imgs/received_withscrl.png").resize((250, 250))
             photo = ImageTk.PhotoImage(image)
             label3 = Label(ramka3, image=photo, borderwidth=2, relief="groove")

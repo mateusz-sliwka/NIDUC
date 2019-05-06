@@ -6,7 +6,7 @@ from Signal import Signal
 def distruption(signal):  # metoda zaklocajaca sygnal
     #Początkowe prawdopodobienstwo p
     p = 0.0414
-    distruptedsignal = Signal(signal)
+    distruptedsignal = signal
     #Lista ktora bedzie zawierac indeksy poczatku oraz konca ciagu tych samych znakow
     b_e = []
     #Lista ktora bedzie zawierac losowo miejsca zaklocen sygnalu
@@ -39,7 +39,8 @@ def distruption(signal):  # metoda zaklocajaca sygnal
                     distruptedsignal.voltage[n_b[j]] = 'H'
         i+=1
     print("\n =====ZAKLOCANIE SYGNALU====")
-    print("Sygnal przed zakoceniem:" + signal)
+    print("Sygnal przed zakoceniem:")
+    print(signal.signal)
     print("Sygnal po zaklocenie:" + ''.join(str(item) for item in distruptedsignal.signal))
     print("=====================")
     return distruptedsignal
@@ -82,7 +83,8 @@ def distruption2(signal):  # metoda zaklocajaca sygnal
                     distruptedsignal[n_b[j]] = '1'
         i += 1
     print("\n =====ZAKLOCANIE SYGNALU====")
-    print("Sygnal przed zakoceniem:" + signal)
+    print("Sygnal przed zakoceniem:")
+    print(signal)
     print("Sygnal po zaklocenie:" + ''.join(str(item) for item in distruptedsignal))
     print("=====================")
     return distruptedsignal
