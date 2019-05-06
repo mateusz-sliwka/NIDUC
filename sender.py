@@ -139,7 +139,7 @@ class sender:
         button12 = tk.Radiobutton(frame2, text="HDB3", variable=algorytm, value=1, anchor="w", height=2)
         button12.grid(row=9, column=0, sticky=tk.NW)
         button13 = tk.Button(frame2, text="Wyślij", height=3, width=15, fg="#FFFFFF", highlightbackground="#000000",
-                             command=lambda: send(algorytm, entry1.get()))
+                             command=lambda: send(algorytm))
         button13.grid(row=10, column=0, sticky=tk.SW, pady=20)
         frame2.grid(column=1, row=2)
         frame6 = tk.Frame(frame4)
