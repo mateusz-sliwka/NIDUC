@@ -1,6 +1,8 @@
+#Klasa reprezentujaca sygnal w postaci binarnej oraz w postaci napiec
 class Signal:
     def __init__(self, signal):
         self.signal = list(signal)
+        # Z- Napiece zerowe, H- Napiecie wysokie, L- napiecie niskie
         self.voltage = ['Z'] * len(signal)
         i = 0
         while i<len(signal):
