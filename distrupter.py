@@ -48,7 +48,9 @@ def distruption(signal):  # metoda zaklocajaca sygnal
 def distruption2(signal):  # metoda zaklocajaca sygnal
     # Początkowe prawdopodobienstwo p
     p = 0.0414
-    distruptedsignal = signal
+    distruptedsignal = []
+    for item in signal:
+        distruptedsignal.append(item)
     # Lista ktora bedzie zawierac indeksy poczatku oraz konca ciagu tych samych znakow
     b_e = []
     # Lista ktora bedzie zawierac losowo miejsca zaklocen sygnalu
@@ -81,6 +83,6 @@ def distruption2(signal):  # metoda zaklocajaca sygnal
         i += 1
     print("\n =====ZAKLOCANIE SYGNALU====")
     print("Sygnal przed zakoceniem:" + signal)
-    print("Sygnal po zaklocenie:" + distruptedsignal)
+    print("Sygnal po zaklocenie:" + ''.join(str(item) for item in distruptedsignal))
     print("=====================")
     return distruptedsignal
