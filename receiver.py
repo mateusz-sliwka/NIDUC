@@ -170,7 +170,7 @@ class receiver:
         button2 = tk.Button(ramka5, text="Nadaj nowy sygnał", command=lambda: newprocess())
         button2.grid(row=1, column=0, pady=5)
         label11 = tk.Label(ramka5, text="Scrambling poprawil skutecznosc o " + str(
-            scramblingresult - puresignaldisruptedresult) + "%", width=60, font=('Verdana', 15, 'bold'))
+           puresignaldisruptedresult-scramblingresult) + "%", width=60, font=('Verdana', 15, 'bold'))
         label11.grid(row=0, column=1)
         ramka5.grid(row=0, column=0)
         ramka4.grid(row=1, column=0)
