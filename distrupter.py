@@ -1,59 +1,41 @@
-import random
+from Signal import Signal
 import math
-import Signal
+import random
 
-# TODO GOSIA - PRZEROBIC TEN PROSTY ALGORYTM ZAKLOCENIA WSTAWIONY NIZEJ NA TEN BARDZIEJ AMBITNY O KTORYM ROZMAWIALISMY
-def distruption(signal2, distruptiondeg):  # metoda zaklocajaca sygnal
-    signal = signal2.signal
-    print("\n =====ZAKLOCANIE SYGNALU====")
-    distruptiondegree = int(distruptiondeg) / 100
-    arraysize = len(signal2.signal)
-    todistrupt = math.floor(
-        arraysize * distruptiondegree)  # policzenie ilosci bitow do zanegowania (rozmiar obrazu * procent zaklocenia)
-    bits = []  # tablica przechowujaca wylosowane bity
-    for i in range(todistrupt):  # losowanie bitow w danej ilosci
-        done = False
-        while (not done):
-            bit = random.randint(0, arraysize - 1)  # wylosowanie numeru bitu z zakresu (0,ostatni bit obrazu)
-            if (bits.count(bit) == 0):  # jezeli dany bit nie zostal wczesniej  wylosowany to:
-                bits.append(bit)  # 1. dodajemy go do tablicy wylosowanych bitow
-                if signal2.signal[bit] == 1:  # 2. negujemy bit o tym numerze w obrazie
-                    signal2.signal[bit] = 0;
+# TODO TRISTAN - PRZEROBIC TEN PROSTY ALGORYTM ZAKLOCENIA WSTAWIONY NIZEJ NA TEN BARDZIEJ AMBITNY O KTORYM ROZMAWIALISMY
+def distruption(signal):  # metoda zaklocajaca sygnal
+    p = 0.0414
+    distruptedsignal= Signal(signal)
+    b_e = []
+    n_b = []
+    for i in range(len(distruptedsignal.signal)):
+        b_e.append(i)
+        while distruptedsignal.signal[i] == distruptedsignal.signal[i+1]:
+            if i< len(distruptedsignal.signal) - 1:
+                i+=1
+            else:
+                break
+        b_e.append(i)
+        if b_e[1] - b_e[0] >= 4:
+            j = 0
+            while j <= b_e[1] - b_e[0] - 4:
+                j+=1
+            p = p + j* 0.000012
+            p = math.ceil(p*(b_e[1]-b_e[0]))
+            j = 0
+            while j < p:
+                n_b.append(random.randint(b_e[0],b_e[1]))
+            for j in range(len(n_b)):
+                if distruptedsignal.signal[n_b[j]] == '1':
+                    distruptedsignal.signal[n_b[j]] == '0'
+                    distruptedsignal.voltage[n_b[j]] == 'Z'
                 else:
-                    signal2.signal[bit] = 1;
-                done = True
-        else:  # jezeli zostal wczesniej wylosowany to przechodzimy do petli jeszcze raz
-            done = False
-    print("Sygnal przed zaklocenie:" + str(signal))
-    print("Sygnal zaklocany z intensywnoscia:" + distruptiondeg+"%")
-    print("Sygnal po zakloceniu:" + str(signal2.signal))
-    print("=====================")
-    return signal2
-
-def distruption2(signal, distruptiondeg):  # metoda zaklocajaca sygnal
-
+                    distruptedsignal.signal[n_b[j]] == '1'
+                    distruptedsignal.voltage[n_b[j]] == 'H'
+        i+=1
     print("\n =====ZAKLOCANIE SYGNALU====")
-    distruptiondegree = int(distruptiondeg) / 100
-    arraysize = len(signal)
-    result = signal.copy()
-    todistrupt = math.floor(
-        arraysize * distruptiondegree)  # policzenie ilosci bitow do zanegowania (rozmiar obrazu * procent zaklocenia)
-    bits = []  # tablica przechowujaca wylosowane bity
-    for i in range(todistrupt):  # losowanie bitow w danej ilosci
-        done = False
-        while (not done):
-            bit = random.randint(0, arraysize - 1)  # wylosowanie numeru bitu z zakresu (0,ostatni bit obrazu)
-            if (bits.count(bit) == 0):  # jezeli dany bit nie zostal wczesniej  wylosowany to:
-                bits.append(bit)  # 1. dodajemy go do tablicy wylosowanych bitow
-                if result[bit] == 1:  # 2. negujemy bit o tym numerze w obrazie
-                    result[bit] = 0;
-                else:
-                    result[bit] = 1;
-                done = True
-        else:  # jezeli zostal wczesniej wylosowany to przechodzimy do petli jeszcze raz
-            done = False
-    print("Sygnal przed zaklocenie:" + str(signal))
-    print("Sygnal zaklocany z intensywnoscia:" + distruptiondeg+"%")
-    print("Sygnal po zakloceniu:" + str(result))
+    print("Sygnal przed zakoceniem:" + ''.join(str(item) for item in signal.signal))
+    print("Sygnal po zaklocenie:" + ''.join(str(item) for item in distruptedsignal.signal))
     print("=====================")
-    return result
+    return distruptedsignal
+distruption("11111111")
