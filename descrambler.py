@@ -1,9 +1,8 @@
-# TODO TRISTAN - FUNKCJA DESCRAMBLINGU
 from scrambler import scramble
 
-
+# Algorytm dokonujacy descramblingu
 def descramble(signal, algorythm):
-    descrambledsignal= signal
+    descrambledsignal= signal   
     if algorythm == "B8ZS":
         i = 0
         while i< (len(descrambledsignal.signal) - 4):
