@@ -30,6 +30,7 @@ def distruption(signal):  # metoda zaklocajaca sygnal
             j = 0
             while j < p:
                 n_b.append(random.randint(b_e[0],b_e[1]))
+                j+=1
             for j in range(len(n_b)):
                 if distruptedsignal.signal[n_b[j]] == '1':
                     distruptedsignal.signal[n_b[j]] == '0'
@@ -78,6 +79,7 @@ def distruption2(signal):  # metoda zaklocajaca sygnal
             while j < p:
                 print("tu sie wyklada")
                 n_b.append(random.randint(b_e[0], b_e[1]))
+                j+=1
             for j in range(len(n_b)):
                 if distruptedsignal[n_b[j]] == '1':
                     distruptedsignal[n_b[j]] == '0'
