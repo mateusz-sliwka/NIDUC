@@ -1,4 +1,3 @@
-
 import math
 import random
 from Signal import Signal
@@ -37,7 +36,10 @@ def distruption(signal):  # metoda zaklocajaca sygnal
                 else:
                     distruptedsignal.signal[n_b[j]] = '1'
                     distruptedsignal.voltage[n_b[j]] = 'H'
-        i+=1
+        b_e.clear()
+        n_b.clear()
+        p = 0.0414
+        i += 1
     print("\n =====ZAKLOCANIE SYGNALU====")
     print("Sygnal przed zakoceniem:")
     print(signal.signal)
@@ -57,6 +59,7 @@ def distruption2(signal):  # metoda zaklocajaca sygnal
     # Lista ktora bedzie zawierac losowo miejsca zaklocen sygnalu
     n_b = []
     i = 0
+
     while i < len(distruptedsignal)- 1:
         b_e.append(i)
         while distruptedsignal[i] == distruptedsignal[i+1]:
@@ -64,10 +67,10 @@ def distruption2(signal):  # metoda zaklocajaca sygnal
                 if i > len(distruptedsignal) - 2:
                     break
         b_e.append(i)
-        # Zaklocanie odbywa sie jezeli pojawi sie ciag powyzej 4 takich samych znakow
+        # Zaklocanie odbywa sie jezeli pojawi sie ciag powyzej 3 takich samych znakow
         if (b_e[1]-b_e[0]+1) >= 4:
             j = 0
-            while j < (b_e[1]-b_e[0]+1) - 4:
+            while j < (b_e[1]-b_e[0]+1) - 3:
                 j += 1
             p = p + j * 0.000012
             p = math.ceil(p * (b_e[1] - b_e[0]))
@@ -75,12 +78,17 @@ def distruption2(signal):  # metoda zaklocajaca sygnal
             while j < p:
                 n_b.append(random.randint(b_e[0], b_e[1]))
                 j+=1
+            print(n_b)
             for j in range(len(n_b)):
-                if distruptedsignal[n_b[j]] == '1':
-                    distruptedsignal[n_b[j]] = '0'
-
+                if distruptedsignal[n_b[j]] == 1:
+                    distruptedsignal[n_b[j]] = 0
                 else:
-                    distruptedsignal[n_b[j]] = '1'
+                    distruptedsignal[n_b[j]] = 1
+            print(signal[n_b[0]])
+            print(distruptedsignal[n_b[0]])
+        b_e.clear()
+        n_b.clear()
+        p = 0.0414
         i += 1
     print("\n =====ZAKLOCANIE SYGNALU====")
     print("Sygnal przed zakoceniem:")
