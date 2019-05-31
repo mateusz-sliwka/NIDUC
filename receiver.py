@@ -10,7 +10,7 @@ import numpy as np
 
 
 class receiver:
-    def __init__(self, puresignal, puresignaldisrupted, descrambled, algorythm, degree, scrambled, scrambleddisrupted):
+    def __init__(self, puresignal, puresignaldisrupted, descrambled, algorythm, scrambled, scrambleddisrupted):
         window2 = tk.Tk()
         window2.title("Odbiorca sygnału")
         window2.geometry("900x520")
@@ -44,6 +44,14 @@ class receiver:
                 scramblingresult - puresignaldisruptedresult))
 
         def array_vs_array(array1, array2): #zestawienie dwoch sygnalow, pokazanie roznic
+            array2=array2.signal
+            licznik = 0
+            for i in range(len(array1)):
+                if (array1[i] != array2[i]):
+                    licznik += 1
+            return licznik
+
+        def array_vs_array2(array1, array2):  # zestawienie dwoch sygnalow, pokazanie roznic
             licznik = 0
             for i in range(len(array1)):
                 if (array1[i] != array2[i]):
@@ -67,7 +75,12 @@ class receiver:
             label.image = photo
             label.grid(column=0, row=1, sticky=tk.N)
 
-        def receive_puresignal(value): #wypelnienie miejsca na sygnal wysylany
+        def receive_puresignal(value2): #wypelnienie miejsca na sygnal wysylany
+            value=[]
+            for i in range(len(value2)):
+                value.append(value2[i])
+
+
             plt.imsave('imgs/received_puresignal.png',
                        np.array(value).reshape(int(math.sqrt(len(value))), int(math.sqrt(len(value)))), cmap=cm.gray)
             image = Image.open("imgs/received_puresignal.png").resize((250, 250))
@@ -77,17 +90,23 @@ class receiver:
             label.grid(column=0, row=1, sticky=tk.N)
 
         def receive_puresignaldisrupted(value): #wyplenienie miejsca na signal zaklocony niescramblowany
-            plt.imsave('imgs/received_withoutscr.png',
-                       np.array(value).reshape(int(math.sqrt(len(value))), int(math.sqrt(len(value)))), cmap=cm.gray)
+            for i in range (len(value)):
+                value[i]=int(value[i])
+            print(value)
+
+            plt.imsave('imgs/received_withoutscr.png',np.array(value).reshape(int(math.sqrt(len(value))), int(math.sqrt(len(value)))), cmap=cm.gray)
             image = Image.open("imgs/received_withoutscr.png").resize((250, 250))
             photo = ImageTk.PhotoImage(image)
             label2 = Label(ramka2, image=photo, borderwidth=2, relief="groove")
             label2.image = photo
             label2.grid(column=0, row=1, sticky=tk.N)
 
-        def receive_descrambled(value): #wypelnienie miejsca na sygnal po descramblingu
-            plt.imsave('imgs/received_withscrl',
-                       np.array(value).reshape(int(math.sqrt(len(value))), int(math.sqrt(len(value)))), cmap=cm.gray)
+        def receive_descrambled(value2): #wypelnienie miejsca na sygnal po descramblingu
+            value=value2.signal
+            for i in range(len(value)):
+                value[i] = int(value[i])
+            print(value)
+            plt.imsave('imgs/received_withscrl.png', np.array(value).reshape(int(math.sqrt(len(value))), int(math.sqrt(len(value)))), cmap=cm.gray)
             image = Image.open("imgs/received_withscrl.png").resize((250, 250))
             photo = ImageTk.PhotoImage(image)
             label3 = Label(ramka3, image=photo, borderwidth=2, relief="groove")
@@ -121,9 +140,8 @@ class receiver:
         label2 = tk.Label(ramka2, text="Odebrany niescramblowany obraz")
         label2.grid(row=0, column=0)
         # obrazek1
-        label4 = tk.Label(ramka2, text="Stopień zakłócenia: " + degree + "%")
-        label4.grid(row=2, column=0)
-        result = array_vs_array(puresignal, puresignaldisrupted)
+
+        result = array_vs_array2(puresignal, puresignaldisrupted)
         puresignaldisruptedresult = result * 100 / len(puresignal)
         label5 = tk.Label(ramka2, text="Ilość zniekształconych bitów: " + str(result) + "\nStanowią one " + str(
             result * 100 / len(puresignal)) + " % sygnału")
@@ -134,7 +152,7 @@ class receiver:
         label3.grid(row=0, column=0)
         # obrazek1
         result2 = array_vs_array(puresignal, descrambled)
-        label9 = tk.Label(ramka3, text="Metoda scramblingu: " + algorythm + "\nStopień zakłócenia: " + degree + "%")
+        label9 = tk.Label(ramka3, text="Metoda scramblingu: " + algorythm)
         label9.grid(row=2, column=0)
         scramblingresult = result2 * 100 / len(puresignal)
         label10 = tk.Label(ramka3, text="Ilość zniekształconych bitów: " + str(result2) + "\nStanowią one " + str(
@@ -152,7 +170,7 @@ class receiver:
         button2 = tk.Button(ramka5, text="Nadaj nowy sygnał", command=lambda: newprocess())
         button2.grid(row=1, column=0, pady=5)
         label11 = tk.Label(ramka5, text="Scrambling poprawil skutecznosc o " + str(
-            scramblingresult - puresignaldisruptedresult) + "%", width=60, font=('Verdana', 15, 'bold'))
+           puresignaldisruptedresult-scramblingresult) + "%", width=60, font=('Verdana', 15, 'bold'))
         label11.grid(row=0, column=1)
         ramka5.grid(row=0, column=0)
         ramka4.grid(row=1, column=0)

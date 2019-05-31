@@ -43,12 +43,24 @@ class sender:
             lab = Label(frame6, image=photo, borderwidth=2, relief="groove")
             lab.image = photo
             lab.grid(column=0, row=2, sticky=tk.N)
-            img = Image.open(filename).convert('L')
+            img = Image.open(filename).convert('1')
             np_img = np.array(img)
-            np_img = ~np_img  # invert B&W
-            np_img[np_img > 0] = 1
+
+            tabela = []
+            y=0
+            for x in np.nditer(np_img):
+                tabela.append(x)
+                y=y+1
+
+            print(type(np_img))
+            print(np_img.shape)
+            print(np_img.size)
+            print("po")
+            print(type(tabela))
+            print(len(tabela))
+
             global signal
-            signal = np_img
+            signal = tabela
 
         def coloredimg(): #generowanie jednolitego obrazu
             nooptions()
@@ -67,7 +79,7 @@ class sender:
         def generateimg(first, second): #generowanie obrazu o danym rozmiarze i ilosci czarnych pikseli
             value = []
             kontrolka = second
-            for i in range(first * first):
+            for i in range (first * first):
                 if (kontrolka > 0):
                     value.append(0)
                     kontrolka -= 1
@@ -85,21 +97,23 @@ class sender:
             lab.image = photo
             lab.grid(column=0, row=2, sticky=tk.N)
 
-        def send(algorytm, stopien): #przeslanie obrazu z programu nadawczego do kanalu transmisyjnego
+        def send(algorytm): #przeslanie obrazu z programu nadawczego do kanalu transmisyjnego
             print("=====WYSYLKA SYGNALU Z PROGRAMU NADAWCZEGO====")
             print("Sygnal do scramblingu: ")
             print(signal)
             print("O dlugosci: " + str(len(signal)))
             if (algorytm.get() == 0):
-                print("Algorytm scramblowania: algorytm1")
-                algo = "algorytm1"
+                print("Algorytm scramblowania: B8ZS")
+                algo = "B8ZS"
             if (algorytm.get() == 1):
-                algo = "algorytm2"
-                print("Algorytm scramblowania: algorytm2")
-            print("Stopien zaklocenia: " + stopien + "%")
+                algo = "HDB3"
+                print("Algorytm scramblowania: HDB3")
+            if(algorytm.get()==2):
+                algo="AES"
+                print("Algorytm scramblowania: AES")
             print("=====================")
             window.destroy()
-            transmitter.transmitter(signal, stopien, algo)
+            transmitter.transmitter(signal,algo)
 
         frame4 = tk.Frame()
         version = tk.Label(frame4, text="Scrambler sender v0.0", fg="grey", width=30, anchor="w")
@@ -135,22 +149,20 @@ class sender:
         labka = tk.Label(frame2, text="Rodzaj scramblingu: ", fg="black", width=30, anchor="w",
                          font=('Verdana', 15, 'bold'))
         labka.grid(row=7, column=0, sticky=tk.NW, pady=20)
-        button11 = tk.Radiobutton(frame2, text="Algorytm1", variable=algorytm, value=0, anchor="w", height=2)
+        button11 = tk.Radiobutton(frame2, text="B8ZS", variable=algorytm, value=0, anchor="w", height=2)
         button11.grid(row=8, column=0, sticky=tk.NW)
-        button12 = tk.Radiobutton(frame2, text="Algorytm2", variable=algorytm, value=1, anchor="w", height=2)
+        button12 = tk.Radiobutton(frame2, text="HDB3", variable=algorytm, value=1, anchor="w", height=2)
         button12.grid(row=9, column=0, sticky=tk.NW)
+        button12 = tk.Radiobutton(frame2, text="AES", variable=algorytm, value=2, anchor="w", height=2)
+        button12.grid(row=10, column=0, sticky=tk.NW)
         button13 = tk.Button(frame2, text="Wyślij", height=3, width=15, fg="#FFFFFF", highlightbackground="#000000",
-                             command=lambda: send(algorytm, entry1.get()))
-        button13.grid(row=10, column=0, sticky=tk.SW, pady=20)
+                             command=lambda: send(algorytm))
+        button13.grid(row=11, column=0, sticky=tk.SW, pady=20)
         frame2.grid(column=1, row=2)
         frame6 = tk.Frame(frame4)
         coloredimg()
         frame5 = tk.Frame(frame6)
-        entry1 = Entry(frame5, width=5)
-        entry1.grid(row=0, column=0, sticky=tk.NW)
-        entry1.insert(END, '0')
-        text1 = Label(frame5, text="% zakłocenia sygnału")
-        text1.grid(row=0, column=1, sticky=tk.NW)
+
         frame5.grid(column=0, row=3, pady=10, sticky=tk.N)
         frame6.grid(column=0, row=2, sticky=tk.N)
         frame4.grid(column=0, row=0, sticky=tk.N)

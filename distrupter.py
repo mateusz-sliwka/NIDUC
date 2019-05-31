@@ -1,30 +1,99 @@
-import random
 import math
+import random
+from Signal import Signal
 
-# TODO GOSIA - PRZEROBIC TEN PROSTY ALGORYTM ZAKLOCENIA WSTAWIONY NIZEJ NA TEN BARDZIEJ AMBITNY O KTORYM ROZMAWIALISMY
-def distruption(signal, distruptiondeg):  # metoda zaklocajaca sygnal
+def distruption(signal):  # metoda zaklocajaca sygnal
     print("\n =====ZAKLOCANIE SYGNALU====")
-    distruptiondegree = int(distruptiondeg) / 100
-    arraysize = len(signal)
-    result = signal.copy()
-    todistrupt = math.floor(
-        arraysize * distruptiondegree)  # policzenie ilosci bitow do zanegowania (rozmiar obrazu * procent zaklocenia)
-    bits = []  # tablica przechowujaca wylosowane bity
-    for i in range(todistrupt):  # losowanie bitow w danej ilosci
-        done = False
-        while (not done):
-            bit = random.randint(0, arraysize - 1)  # wylosowanie numeru bitu z zakresu (0,ostatni bit obrazu)
-            if (bits.count(bit) == 0):  # jezeli dany bit nie zostal wczesniej  wylosowany to:
-                bits.append(bit)  # 1. dodajemy go do tablicy wylosowanych bitow
-                if result[bit] == 1:  # 2. negujemy bit o tym numerze w obrazie
-                    result[bit] = 0;
-                else:
-                    result[bit] = 1;
-                done = True
-        else:  # jezeli zostal wczesniej wylosowany to przechodzimy do petli jeszcze raz
-            done = False
-    print("Sygnal przed zaklocenie:" + str(signal))
-    print("Sygnal zaklocany z intensywnoscia:" + distruptiondeg+"%")
-    print("Sygnal po zakloceniu:" + str(result))
+    print("Sygnal przed zakoceniem:" + ''.join(str(item) for item in signal.signal))
+    #Początkowe prawdopodobienstwo p
+    p = 0.0414
+    distruptedsignal = signal
+    # Lista ktora bedzie zawierac indeksy poczatku oraz konca ciagu tych samych znakow
+    b_e = []
+    # Lista ktora bedzie zawierac losowo miejsca zaklocen sygnalu
+    n_b = []
+    i = 0
+    while i < len(distruptedsignal.signal) - 1:
+        b_e.append(i)
+        while distruptedsignal.signal[i] == distruptedsignal.signal[i + 1] and distruptedsignal.voltage[i] != 'V' and distruptedsignal.voltage[i] != 'B':
+            i += 1
+            if i > len(distruptedsignal.signal) - 2:
+                break
+        b_e.append(i)
+        # Zaklocanie odbywa sie jezeli pojawi sie ciag powyzej 4 takich samych znakow
+        if b_e[1] - b_e[0] >= 4:
+            j = 0
+            while j <= b_e[1] - b_e[0] - 4:
+                j += 1
+            p = p + j * 0.000012
+            p = math.ceil(p * (b_e[1] - b_e[0]))
+            j = 0
+            while j < p:
+                n_b.append(random.randint(b_e[0], b_e[1]))
+                j += 1
+            for j in range(len(n_b)):
+                if distruptedsignal.signal[n_b[j]] == 1:
+                    distruptedsignal.signal[n_b[j]] = 0
+                    distruptedsignal.voltage[n_b[j]] = 'Z'
+                elif distruptedsignal.voltage[j-1] == 'H' and distruptedsignal.signal == 0:
+                    distruptedsignal.signal[n_b[j]] = 1
+                    distruptedsignal.voltage[n_b[j]] = 'L'
+                elif distruptedsignal.voltage[j-1] == 'L' and distruptedsignal.signal == 0:
+                    distruptedsignal.signal[n_b[j]] = 1
+                    distruptedsignal.voltage[n_b[j]] = 'H'
+        b_e.clear()
+        n_b.clear()
+        p = 0.0414
+        i += 1
+    print("Sygnal po zakloceniu:" + ''.join(str(item) for item in distruptedsignal.signal))
     print("=====================")
-    return result
+    return distruptedsignal
+
+
+def distruption2(signal):  # metoda zaklocajaca sygnal
+    # Początkowe prawdopodobienstwo p
+    if type(signal).__name__ == 'Signal':
+        distruption(signal)
+    else:
+        print('metoda 1')
+        p = 0.0414
+        distruptedsignal = []
+        for item in signal:
+            distruptedsignal.append(item)
+        # Lista ktora bedzie zawierac indeksy poczatku oraz konca ciagu tych samych znakow
+        b_e = []
+        # Lista ktora bedzie zawierac losowo miejsca zaklocen sygnalu
+        n_b = []
+        i = 0
+        while i < len(distruptedsignal)- 1:
+            b_e.append(i)
+            while distruptedsignal[i] == distruptedsignal[i+1]:
+                    i += 1
+                    if i > len(distruptedsignal) - 2:
+                        break
+            b_e.append(i)
+            # Zaklocanie odbywa sie jezeli pojawi sie ciag powyzej 3 takich samych znakow
+            if (b_e[1]-b_e[0]+1) >= 4:
+                j = 0
+                while j < (b_e[1]-b_e[0]+1) - 3:
+                    j += 1
+                p = p + j * 0.000012
+                p = math.ceil(p * (b_e[1] - b_e[0]))
+                j = 0
+                while j < p:
+                    n_b.append(random.randint(b_e[0], b_e[1]))
+                    j+=1
+                for j in range(len(n_b)):
+                    if distruptedsignal[n_b[j]] == 1:
+                        distruptedsignal[n_b[j]] = 0
+                    else:
+                        distruptedsignal[n_b[j]] = 1
+            b_e.clear()
+            n_b.clear()
+            p = 0.0414
+            i += 1
+        print("\n =====ZAKLOCANIE SYGNALU====")
+        print("Sygnal przed zakoceniem:" + ''.join(str(item) for item in signal))
+        print("Sygnal po zaklocenie:" + ''.join(str(item) for item in distruptedsignal))
+        print("=====================")
+        return distruptedsignal
