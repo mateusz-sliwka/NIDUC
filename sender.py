@@ -43,12 +43,24 @@ class sender:
             lab = Label(frame6, image=photo, borderwidth=2, relief="groove")
             lab.image = photo
             lab.grid(column=0, row=2, sticky=tk.N)
-            img = Image.open(filename).convert('L')
+            img = Image.open(filename).convert('1')
             np_img = np.array(img)
-            np_img = ~np_img  # invert B&W
-            np_img[np_img > 0] = 1
+
+            tabela = []
+            y=0
+            for x in np.nditer(np_img):
+                tabela.append(x)
+                y=y+1
+
+            print(type(np_img))
+            print(np_img.shape)
+            print(np_img.size)
+            print("po")
+            print(type(tabela))
+            print(len(tabela))
+
             global signal
-            signal = np_img
+            signal = tabela
 
         def coloredimg(): #generowanie jednolitego obrazu
             nooptions()
@@ -67,7 +79,7 @@ class sender:
         def generateimg(first, second): #generowanie obrazu o danym rozmiarze i ilosci czarnych pikseli
             value = []
             kontrolka = second
-            for i in range(first * first):
+            for i in range (first * first):
                 if (kontrolka > 0):
                     value.append(0)
                     kontrolka -= 1
@@ -96,6 +108,9 @@ class sender:
             if (algorytm.get() == 1):
                 algo = "HDB3"
                 print("Algorytm scramblowania: HDB3")
+            if(algorytm.get()==2):
+                algo="AES"
+                print("Algorytm scramblowania: AES")
             print("=====================")
             window.destroy()
             transmitter.transmitter(signal,algo)
@@ -138,9 +153,11 @@ class sender:
         button11.grid(row=8, column=0, sticky=tk.NW)
         button12 = tk.Radiobutton(frame2, text="HDB3", variable=algorytm, value=1, anchor="w", height=2)
         button12.grid(row=9, column=0, sticky=tk.NW)
+        button12 = tk.Radiobutton(frame2, text="AES", variable=algorytm, value=2, anchor="w", height=2)
+        button12.grid(row=10, column=0, sticky=tk.NW)
         button13 = tk.Button(frame2, text="Wyślij", height=3, width=15, fg="#FFFFFF", highlightbackground="#000000",
                              command=lambda: send(algorytm))
-        button13.grid(row=10, column=0, sticky=tk.SW, pady=20)
+        button13.grid(row=11, column=0, sticky=tk.SW, pady=20)
         frame2.grid(column=1, row=2)
         frame6 = tk.Frame(frame4)
         coloredimg()

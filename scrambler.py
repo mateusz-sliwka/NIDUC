@@ -18,7 +18,7 @@ def scramble(signal, algorythm):
                         scrambledsignal.voltage[i + 6] = 'B'
                         scrambledsignal.voltage[i + 7] = 'V'
             i += 8
-    else:
+    elif algorythm=="HDB3":
         i = 0
         j = 0
         while i< (len(scrambledsignal.signal)-3):
@@ -33,6 +33,9 @@ def scramble(signal, algorythm):
                     scrambledsignal.voltage[i+3] = 'V'
                     j = 0
             i+=4
+    else:
+        print("todo")
+        #tutaj kod dla AES
     print("Sygnal po scramblingu:"+ ''.join(str(item) for item in scrambledsignal.signal))
     print (scrambledsignal.voltage)
     print("=====================")
