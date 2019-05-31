@@ -14,7 +14,7 @@ def descramble(signal, algorythm):
                     descrambledsignal.voltage[i+3] = 'Z'
                     descrambledsignal.voltage[i+4] = 'Z'
                 i += 1
-        else:
+        elif algorythm=="HDB3":
             i = 0
             j = 0
             while i< (len(descrambledsignal.signal)-3):
@@ -28,6 +28,9 @@ def descramble(signal, algorythm):
                         descrambledsignal.voltage[i] = 'Z'
                         j = 0
                 i += 1
+        else:
+            print("todo aes desrambler")
+            #aes placeholder
         print("\n =====DESCRAMBLOWANIE SYGNALU====")
         print("Sygnal przed scramblingiem:" + ''.join(str(item) for item in signal.signal))
         print (signal.voltage)
