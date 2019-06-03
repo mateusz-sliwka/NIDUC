@@ -13,7 +13,7 @@ class sender:
     def __init__(self):
         window = tk.Tk()
         window.title("Nadawca sygnału")
-        window.geometry("600x490")
+        window.geometry("600x550")
 
         def showoptions(): #pokazanie inputow na wlasciwosci generowanego obrazu
             data = IntVar()
