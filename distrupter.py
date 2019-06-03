@@ -52,10 +52,6 @@ def distruption(signal):  # metoda zaklocajaca sygnal
 
 def distruption2(signal):  # metoda zaklocajaca sygnal
     # Początkowe prawdopodobienstwo p
-    if type(signal).__name__ == 'Signal':
-        distruption(signal)
-    else:
-        print('metoda 1')
         p = 0.0414
         distruptedsignal = []
         for item in signal:
