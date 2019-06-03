@@ -4,6 +4,9 @@ from Signal import Signal
 
 def descramble(signal, algorythm):
     if signal.__class__.__name__ == 'Signal':
+        print("\n =====DESCRAMBLOWANIE SYGNALU====")
+        print("Sygnal przed scramblingiem:" + ''.join(str(item) for item in signal.signal))
+        print (signal.voltage)
         descrambledsignal= signal
         if algorythm == "B8ZS":
             i = 0
@@ -14,7 +17,7 @@ def descramble(signal, algorythm):
                     descrambledsignal.voltage[i+3] = 'Z'
                     descrambledsignal.voltage[i+4] = 'Z'
                 i += 1
-        elif algorythm=="HDB3":
+        else:
             i = 0
             j = 0
             while i< (len(descrambledsignal.signal)-3):
@@ -24,16 +27,10 @@ def descramble(signal, algorythm):
                         descrambledsignal.voltage[i] = 'Z'
                         descrambledsignal.voltage[i + 3] = 'Z'
                         j = 0
-                    elif j % 2 == 0 and descrambledsignal.voltage[i] == 'V':
-                        descrambledsignal.voltage[i] = 'Z'
+                    elif j % 2 == 1 and descrambledsignal.voltage[i] == 'V':
+                        descrambledsignal.voltage[i+3] = 'Z'
                         j = 0
                 i += 1
-        else:
-            print("todo aes desrambler")
-            #aes placeholder
-        print("\n =====DESCRAMBLOWANIE SYGNALU====")
-        print("Sygnal przed scramblingiem:" + ''.join(str(item) for item in signal.signal))
-        print (signal.voltage)
         print("Sygnal po descramblingu:" + ''.join(str(item) for item in descrambledsignal.signal))
         print(descrambledsignal.voltage)
         print("=====================")
