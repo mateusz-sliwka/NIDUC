@@ -37,18 +37,25 @@ class sender:
             nooptions()
             filename = askopenfilename(initialdir="/", title="Select file")
             image = Image.open(filename).resize((250, 250))
-            image = image.convert('1')
+            thresh = 200
+            fn = lambda x: 255 if x > thresh else 0
+            image = image.convert('L')
             photo = ImageTk.PhotoImage(image)
             global lab
             lab = Label(frame6, image=photo, borderwidth=2, relief="groove")
             lab.image = photo
             lab.grid(column=0, row=2, sticky=tk.N)
-            img = Image.open(filename).convert('1')
+            thresh = 200
+            fn = lambda x: 255 if x > thresh else 0
+
+            img = Image.open(filename).convert('L')
             np_img = np.array(img)
 
+            np_img[np_img > 0] = 1
             tabela = []
             y=0
             for x in np.nditer(np_img):
+                print(type(x))
                 tabela.append(x)
                 y=y+1
 

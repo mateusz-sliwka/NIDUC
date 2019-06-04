@@ -12,6 +12,9 @@ import collections
 
 class receiver:
     def __init__(self, puresignal, puresignaldisrupted, descrambled, algorythm, scrambled, scrambleddisrupted):
+        print("dlugosci")
+        print(len(scrambled.signal))
+        print(len(descrambled.voltage))
         window2 = tk.Tk()
         window2.title("Odbiorca sygnału")
         window2.geometry("1400x520")
@@ -64,8 +67,8 @@ class receiver:
             file1.write("\n\nPROCENT NIEZGODNYCH BITOW W SYGNALE ZE SCRAMBLINGIEM: " + str(result2))
             file1.write("\nPROCENT NIEZGODNYCH BITOW W SYGNALU ZE SCRAMLBINGIEM: " + str(scramblingresult))
             file1.write("\nLICZBA I DLUGOSCI CIAGOW TYCH SAMYCH BITOW W SYGNALE ZE SCRAMBLINGIEM: ")
-            tab1 = list(signalhistogram(descrambled).keys())
-            tab2 = list(signalhistogram(descrambled).values())
+            tab1 = list(signalhistogram(scrambleddisrupted).keys())
+            tab2 = list(signalhistogram(scrambleddisrupted).values())
             for x in range (len(tab1)):
                 file1.write("(" + str(tab1[x]) + "," + str(tab2[x]) + "),")
 
@@ -120,7 +123,7 @@ class receiver:
             label.grid(column=0, row=1, sticky=tk.N)
 
         def receive_puresignaldisrupted(value):  # wyplenienie miejsca na signal zaklocony niescramblowany
-            stringhistogram(value)
+
             for i in range(len(value)):
                 value[i] = int(value[i])
 
@@ -134,7 +137,7 @@ class receiver:
             label2.grid(column=0, row=1, sticky=tk.N)
 
         def receive_descrambled(value2):  # wypelnienie miejsca na sygnal po descramblingu
-            signalhistogram(value2)
+
             value = value2.signal
             for i in range(len(value)):
                 value[i] = int(value[i])
@@ -148,7 +151,7 @@ class receiver:
             label3.grid(column=0, row=1, sticky=tk.N)
 
         def stringhistogram(signal):
-            print(type(signal))
+
             b_e = []
             i = 0
             while i < len(signal) - 1:
@@ -243,7 +246,7 @@ class receiver:
         button2.grid(row=1, column=0, pady=5)
         label11 = tk.Label(ramka5, text="Scrambling poprawil skutecznosc o " + str(
             round(puresignaldisruptedresult - scramblingresult,3)) + " punktow procentowych czyli "+str(
-            round(scramblingresult/puresignaldisruptedresult,3))+"raza.", width=100, font=('Verdana', 15, 'bold'))
+            round(puresignaldisruptedresult/scramblingresult,3))+"raza.", width=100, font=('Verdana', 15, 'bold'))
         label11.grid(row=0, column=1)
         ramka5.grid(row=0, column=0)
         ramka4.grid(row=1, column=0)
@@ -254,6 +257,7 @@ class receiver:
         tytul1.grid(row=0, column=0)
         tytul2 = tk.Label(ramka7, text="Ilosc wystapien")
         tytul2.grid(row=0, column=1)
+
 
         tab1 = list(stringhistogram(puresignaldisrupted).keys())
         tab2 = list(stringhistogram(puresignaldisrupted).values())
@@ -327,8 +331,8 @@ class receiver:
         tytul2 = tk.Label(ramka9, text="Ilosc wystapien")
         tytul2.grid(row=0, column=1)
 
-        tab1 = list(signalhistogram(descrambled).keys())
-        tab2 = list(signalhistogram(descrambled).values())
+        tab1 = list(signalhistogram(scrambled).keys())
+        tab2 = list(signalhistogram(scrambled).values())
 
         if (len(tab1)>0):
             dlugosc1 = tk.Label(ramka9, text=tab1[0])
