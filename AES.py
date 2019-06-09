@@ -29,7 +29,7 @@ isbox = (
 (0x50, 0x6C, 0x70, 0x48, 0x50, 0xFD, 0xED, 0xB9, 0xDA, 0x5E, 0x15, 0x46, 0x57, 0xA7, 0x8D, 0x9D, 0x84),
 (0x60, 0x90, 0xD8, 0xAB, 0x00, 0x8C, 0xBC, 0xD3, 0x0A, 0xF7, 0xE4, 0x58, 0x05, 0xB8, 0xB3, 0x45, 0x06),
 (0x70, 0xD0, 0x2C, 0x1E, 0x8F, 0xCA, 0x3F, 0x0F, 0x02, 0xC1, 0xAF, 0xBD, 0x03, 0x01, 0x13, 0x8A, 0x6B),
-(0x80, 0x3A, 0x91, 0x11, 0x41, 0x41, 0x4F, 0x67, 0xEA, 0x97, 0xF2, 0xCF, 0xCE, 0xF0, 0xB4, 0xE6, 0x73),
+(0x80, 0x3A, 0x91, 0x11, 0x41, 0x4F, 0x67, 0xDC, 0xEA, 0x97, 0xF2, 0xCF, 0xCE, 0xF0, 0xB4, 0xE6, 0x73),
 (0x90, 0x96, 0xAC, 0x74, 0x22, 0xE7, 0xAD, 0x35, 0x85, 0xE2, 0xF9, 0x37, 0xE8, 0x1C, 0x75, 0xDF, 0x6E),
 (0xA0, 0x47, 0xF1, 0x1A, 0x71, 0x1D, 0x29, 0xC5, 0x89, 0x6F, 0xB7, 0x62, 0x0E, 0xAA, 0x18, 0xBE, 0x1B),
 (0xB0, 0xFC, 0x56, 0x3E, 0x4B, 0xC6, 0xD2, 0x79, 0x20, 0x9a, 0xDB, 0xC0, 0xFE, 0x78, 0xCD, 0x5A, 0xF4),
@@ -47,7 +47,7 @@ def move(vector,how_many,side):
                 if i == 0:
                     vector[len(vector) - 1] = tmp[i]
                     vector[i] = tmp[i+1]
-                else:
+                elif i<3:
                     vector[i] = tmp[i+1]
             how_many -=1
     else:
@@ -57,23 +57,31 @@ def move(vector,how_many,side):
                 if i == 0:
                     vector[len(vector) - 1 ] = tmp[len(vector) - 2]
                     vector[i] = tmp[len(vector) - 1]
-                else:
+                elif i<3:
                     vector[i] = tmp[i-1]
             how_many -=1
     return vector
 def swap(vector,value):
     if value == 0:
-        for i in range(4):
+        for i in range(len(vector)):
+            br = False
             for j in range(16):
-                for k in range(16):
-                    if sbox[j][0] + sbox[0][k] == vector[i]:
-                        vector[i] = sbox[j][k]
+                for k in range(1,17):
+                    if sbox[0][j] + sbox[k][0] == vector[i]:
+                        vector[i] = sbox[k][j+1]
+                        br = True
+                if br== True:
+                    break;
     else:
-        for i in range(4):
+        for i in range(len(vector)):
+            br = False
             for j in range(16):
-                for k in range(16):
-                    if isbox[j][0] + isbox[0][k] == vector[i]:
-                        vector[i] = isbox[j][k]
+                for k in range(1,17):
+                    if isbox[0][j] + isbox[k][0] == vector[i]:
+                        vector[i] = isbox[k][j+1]
+                        br = True
+                if br== True:
+                    break;
     return vector
 def generate_keys(key):
     for i in range(1,11):
@@ -97,27 +105,37 @@ for i in range(16):
 key = generate_keys(key)
 def encrypt(signal):
     signal = signal_to_hex(signal)
+    print(signal)
     for i in range(16):
         signal[i] = np.absolute(np.subtract(signal[i],key[i]))
     for i in range(1,11):
         signal = swap(signal,0)
         for j in range(4):
-            tmp = np.array(signal[j*4:j*4+3])
+            tmp = np.array(signal[j*4:j*4+4])
             tmp = move(tmp, j, 'LEFT')
-            signal[j*4:j*4+3] = tmp
-        print(len(signal))
+            signal[j*4:j*4+4] = tmp
         for j in range(16):
             signal[j] = np.absolute(np.subtract(signal[j],key[i*16+j]))
-        return signal
+    print(signal)
+    return signal
 def decrypt(signal):
     for i in range(16):
-        signal[i] = np.add(signal[i], key[i])
+        if np.subtract(signal[i],key[i])< 0:
+            signal[i] = np.subtract(key[i],signal[i])
+        else:
+            signal[i] = np.add(key[i],signal[i])
     for i in range(1, 11):
         signal = swap(signal, 1)
         for j in range(4):
-            signal = move(signal[j * 4:], j, 'RIGHT')
+            tmp = np.array(signal[j*4:j*4+4])
+            tmp = move(tmp, j, 'RIGHT')
+            signal[j*4:j*4+4] = tmp
         for j in range(16):
-            signal[i * 16 + j] = np.add(signal[i * 16 + j], key[i * 16 + j])
+            if np.subtract(signal[i], key[i]) < 0:
+                signal[j] = np.subtract(key[i*16+j], signal[j])
+            else:
+                signal[j] = np.add(key[i*16+j], signal[j])
+    print(signal)
     return signal
 def signal_to_hex(signal):
     signal_128 = signal + '0'* (128 -len(signal)%128)
@@ -129,4 +147,4 @@ def signal_to_hex(signal):
     signal_128 = np.array([])
     signal_128 = np.append(signal_128,tmp)
     return signal_128
-encrypt('10010101011')
+decrypt(encrypt('1000111'))

@@ -119,7 +119,7 @@ class sender:
         version = tk.Label(frame4, text="Scrambler sender v0.0", fg="grey", width=30, anchor="w")
         version.grid(row=0, column=0, sticky=tk.NW)
 
-        author = tk.Label(frame4, text="Kamieniecki, Śliwka", fg="grey", anchor="e", width=30)
+        author = tk.Label(frame4, text="Karasek, Kamieniecki, Śliwka", fg="grey", anchor="e", width=30)
         author.grid(row=0, column=1, sticky=tk.NW)
 
         lab1 = tk.Label(frame4, text="Podgląd obrazu", fg="black", width=28, anchor="center",

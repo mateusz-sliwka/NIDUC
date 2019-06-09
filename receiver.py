@@ -199,7 +199,7 @@ class receiver:
         author = tk.Label(ramka0, text="", fg="grey", width=33)
         author.grid(row=0, column=1, sticky=tk.NW)
 
-        author = tk.Label(ramka0, text="Kamieniecki, Śliwka", fg="grey", anchor="e", width=32)
+        author = tk.Label(ramka0, text="Karasek, Kamieniecki, Śliwka", fg="grey", anchor="e", width=32)
         author.grid(row=0, column=4, sticky=tk.NW)
 
         label1 = tk.Label(ramka1, text="Przesyłany obraz")
@@ -245,7 +245,8 @@ class receiver:
         button2 = tk.Button(ramka5, text="Nadaj nowy sygnał", command=lambda: newprocess())
         button2.grid(row=1, column=0, pady=5)
         label11 = tk.Label(ramka5, text="Scrambling poprawil skutecznosc o " + str(
-        round(puresignaldisruptedresult - scramblingresult,3)) + " punktow procentowych czyli ", width=100, font=('Verdana', 15, 'bold'))
+            round(puresignaldisruptedresult - scramblingresult,3)) + " punktow procentowych czyli "+str(
+            round(scramblingresult/puresignaldisruptedresult,3))+"raza.", width=100, font=('Verdana', 15, 'bold'))
         label11.grid(row=0, column=1)
         ramka5.grid(row=0, column=0)
         ramka4.grid(row=1, column=0)
