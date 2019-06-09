@@ -15,7 +15,7 @@ def distruption(signal):  # metoda zaklocajaca sygnal
     i = 0
     while i < len(distruptedsignal.signal) - 1:
         b_e.append(i)
-        while distruptedsignal.signal[i] == distruptedsignal.signal[i + 1] and distruptedsignal.voltage[i] != 'V' and distruptedsignal.voltage[i] != 'B':
+        while distruptedsignal.signal[i] == distruptedsignal.signal[i + 1] and distruptedsignal.signal[i] != 1:
             i += 1
             if i > len(distruptedsignal.signal) - 2:
                 break
