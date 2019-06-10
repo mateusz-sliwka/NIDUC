@@ -29,15 +29,12 @@ def descramble(signal, algorythm):
                     j = 0
             i += 1
 
-
-    print(descrambledsignal.signal)
     for i in range(len(descrambledsignal.signal)):
-        if descrambledsignal.voltage[i] == 'H' or descrambledsignal.voltage[i]=='L':
+        if descrambledsignal.voltage[i] == 'H' or descrambledsignal.voltage[i] == 'L':
             descrambledsignal.signal[i] = 1
         else:
-            descrambledsignal.signal[i]=0
+            descrambledsignal.signal[i] = 0
     print("Sygnal po descramblingu:" + ''.join(str(item) for item in descrambledsignal.signal))
     print(descrambledsignal.voltage)
     print("=====================")
     return descrambledsignal
-

@@ -15,7 +15,7 @@ class sender:
         window.title("Nadawca sygnału")
         window.geometry("600x550")
 
-        def showoptions(): #pokazanie inputow na wlasciwosci generowanego obrazu
+        def showoptions():  # pokazanie inputow na wlasciwosci generowanego obrazu
             data = IntVar()
             data2 = IntVar()
             entry1 = Entry(frame, width=5, textvariable=data)
@@ -30,10 +30,10 @@ class sender:
             generuj.grid(row=2, column=1, sticky=tk.NW)
             frame.grid(row=3, column=0, sticky=tk.NW)
 
-        def nooptions(): #schowanie inputow na wlasciwosci generowanego obrazu
+        def nooptions():  # schowanie inputow na wlasciwosci generowanego obrazu
             frame.grid_forget()
 
-        def imgfromfile(): #wczytanie obrazu z pliku
+        def imgfromfile():  # wczytanie obrazu z pliku
             nooptions()
             filename = askopenfilename(initialdir="/", title="Select file")
             image = Image.open(filename).resize((250, 250))
@@ -47,22 +47,19 @@ class sender:
             np_img = np.array(img)
 
             tabela = []
-            y=0
+            y = 0
             for x in np.nditer(np_img):
                 tabela.append(x)
-                y=y+1
-
-            print(type(np_img))
-            print(np_img.shape)
-            print(np_img.size)
-            print("po")
-            print(type(tabela))
-            print(len(tabela))
-
+                y = y + 1
+            for x in range(len(tabela)):
+                if tabela[x]:
+                    tabela[x] = 1
+                else:
+                    tabela[x] = 0
             global signal
             signal = tabela
 
-        def coloredimg(): #generowanie jednolitego obrazu
+        def coloredimg():  # generowanie jednolitego obrazu
             nooptions()
             value = []
             for i in range(250 * 250):
@@ -76,10 +73,10 @@ class sender:
             lab.image = photo
             lab.grid(column=0, row=2, sticky=tk.N)
 
-        def generateimg(first, second): #generowanie obrazu o danym rozmiarze i ilosci czarnych pikseli
+        def generateimg(first, second):  # generowanie obrazu o danym rozmiarze i ilosci czarnych pikseli
             value = []
             kontrolka = second
-            for i in range (first * first):
+            for i in range(first * first):
                 if (kontrolka > 0):
                     value.append(0)
                     kontrolka -= 1
@@ -97,7 +94,7 @@ class sender:
             lab.image = photo
             lab.grid(column=0, row=2, sticky=tk.N)
 
-        def send(algorytm): #przeslanie obrazu z programu nadawczego do kanalu transmisyjnego
+        def send(algorytm):  # przeslanie obrazu z programu nadawczego do kanalu transmisyjnego
             print("=====WYSYLKA SYGNALU Z PROGRAMU NADAWCZEGO====")
             print("Sygnal do scramblingu: ")
             print(signal)
@@ -108,12 +105,12 @@ class sender:
             if (algorytm.get() == 1):
                 algo = "HDB3"
                 print("Algorytm scramblowania: HDB3")
-            if(algorytm.get()==2):
-                algo="AES"
+            if (algorytm.get() == 2):
+                algo = "AES"
                 print("Algorytm scramblowania: AES")
             print("=====================")
             window.destroy()
-            transmitter.transmitter(signal,algo)
+            transmitter.transmitter(signal, algo)
 
         frame4 = tk.Frame()
         version = tk.Label(frame4, text="Scrambler sender v0.0", fg="grey", width=30, anchor="w")
