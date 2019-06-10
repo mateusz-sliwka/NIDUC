@@ -2,7 +2,7 @@ import math
 import random
 from Signal import Signal
 
-def distruption(signal):  # metoda zaklocajaca sygnal
+def distruption(signal,algorythm):  # metoda zaklocajaca sygnal
     print("\n =====ZAKLOCANIE SYGNALU====")
     print("Sygnal przed zakoceniem:" + ''.join(str(item) for item in signal.signal))
     #Początkowe prawdopodobienstwo p
@@ -17,22 +17,27 @@ def distruption(signal):  # metoda zaklocajaca sygnal
         b_e.append(i)
         while distruptedsignal.signal[i] == distruptedsignal.signal[i + 1] and distruptedsignal.voltage[i] == 'Z':
             i += 1
-            if i > len(distruptedsignal.signal) - 2:
+            if i >=len(distruptedsignal.signal) - 1:
                 break
         b_e.append(i)
         print(b_e)
+        stala=3 #zmienna mowiaca o tym jak dlugi ma byc ciag tych samych zankow zeby wystapilo zaklocenie
+        if(algorythm=="B8ZS"):
+            stala=4
         # Zaklocanie odbywa sie jezeli pojawi sie ciag powyzej 4 takich samych znakow
-        if b_e[1] - b_e[0] >= 4:
+
+        ilosc = b_e[1]-b_e[0]+1    #ilosc bitow takkich samych w danym ciagu np dla 1111 ilosc =4
+        if ilosc >= stala:  #jezeli ilosc jest wieksza niz stala do zaklocenia
             j = 0
-            while j <= b_e[1] - b_e[0] - 4:
+            while j <= ilosc - stala:  #iterujemy po roznicy ilosci i stalej, nie rozumiem tej petli, czemu po prostu nie j=ilosc-stala?
                 j += 1
             p = p + j * 0.000012
-            p = math.ceil(p * (b_e[1] - b_e[0]))
+            p = math.ceil(p * ilosc)
             j = 0
             while j < p:
-                n_b.append(random.randint(b_e[0], b_e[1]))
-                j += 1
-            for j in range(len(n_b)):
+                n_b.append(random.randint(b_e[0], b_e[1]))  #losowanie bitow do zaklocenia, czy moze wylosowac kilka razy ten sam?
+                j += 1 #j bedzie mialo dokladnie taka wartosc jak len(n_b)
+            for j in range(len(n_b)):   #tutaj j nie jest 0, j ma wartosc od iteracji z while wyzej, to dobrze?
                 if distruptedsignal.signal[n_b[j]] == 1:
                     distruptedsignal.signal[n_b[j]] = 0
                     distruptedsignal.voltage[n_b[j]] = 'Z'
@@ -51,7 +56,7 @@ def distruption(signal):  # metoda zaklocajaca sygnal
     return distruptedsignal
 
 
-def distruption2(signal):  # metoda zaklocajaca sygnal
+def distruption2(signal,algorythm):  # metoda zaklocajaca sygnal
     # Początkowe prawdopodobienstwo p
         p = 0.0414
         distruptedsignal = []
@@ -69,13 +74,16 @@ def distruption2(signal):  # metoda zaklocajaca sygnal
                     if i > len(distruptedsignal) - 2:
                         break
             b_e.append(i)
+            stala = 3
+            if (algorythm == "B8ZS"):
+                stala = 4
             # Zaklocanie odbywa sie jezeli pojawi sie ciag powyzej 3 takich samych znakow
-            if (b_e[1]-b_e[0]+1) >= 4:
+            if (b_e[1]-b_e[0]+1) >= stala:
                 j = 0
-                while j < (b_e[1]-b_e[0]+1) - 3:
+                while j < (b_e[1]-b_e[0]+1) - stala:
                     j += 1
                 p = p + j * 0.000012
-                p = math.ceil(p * (b_e[1] - b_e[0]))
+                p = math.ceil(p * (b_e[1] - b_e[0]+1))
                 j = 0
                 while j < p:
                     n_b.append(random.randint(b_e[0], b_e[1]))
