@@ -48,10 +48,16 @@ Rcon = (
 )
 
 
-def text2matrix(text):
+def text2matrix(text2):
     matrix = []
+    text=0
+    print('typ to: ')
+    print(type(text2))
+
+    # for i in range (len(text2)):
+    #     text+=text2[i]*pow(10,len-1-i)
     for i in range(16):
-            byte = (int(text) >> (8 * (15 - i))) & 0xFF
+            byte = text2 >> (8 * (15 - i)) & 0xFF
             if i % 4 == 0:
                 matrix.append([byte])
             else:
@@ -80,7 +86,7 @@ class AES:
 
     def __init__(self,signal):
         self.change_key(self.master_key)
-        self.encrypted = self.encrypt('000100101011111110000')
+        self.encrypted = self.encrypt(signal)
         self.decrypted = self.decrypt(self.encrypted)
 
     def change_key(self, master_key):
@@ -110,6 +116,8 @@ class AES:
     def encrypt(self, plaintext):
         global length
         length = len(plaintext)
+        print("typ:")
+        print(type(plaintext))
         self.plain_state = text2matrix(plaintext)
 
         self.__add_round_key(self.plain_state, self.round_keys[:4])
@@ -124,6 +132,7 @@ class AES:
         return matrix2text(self.plain_state)
     def decrypt(self, ciphertext):
         ciphertext = int(ciphertext)
+
         self.cipher_state = text2matrix(ciphertext)
 
         self.__add_round_key(self.cipher_state, self.round_keys[40:])
