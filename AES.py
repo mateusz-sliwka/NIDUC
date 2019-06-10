@@ -70,11 +70,18 @@ def matrix2text(matrix):
         for i in range(length - len(text)):
             text= '0'+text
     return text
+    global decrypted
 
 
 class AES:
-    def __init__(self, master_key):
-        self.change_key(master_key)
+    decrypted = 0
+    encrypted = 0
+    master_key = random.randint(0x00, 0xFF)
+
+    def __init__(self,signal):
+        self.change_key(self.master_key)
+        self.encrypted = self.encrypt('000100101011111110000')
+        self.decrypted = self.decrypt(self.encrypted)
 
     def change_key(self, master_key):
         self.round_keys = text2matrix(master_key)
@@ -198,9 +205,4 @@ class AES:
             s[i][3] ^= v
 
         self.__mix_columns(s)
-key= random.randint(0x00,0xFF)
-cipher = AES(key)
-encrypted = cipher.encrypt('000100101011111110000')
-decrypted = cipher.decrypt(encrypted)
-print(encrypted)
-print(decrypted)
+
