@@ -8,6 +8,7 @@ def distruption(signal):  # metoda zaklocajaca sygnal
     #Początkowe prawdopodobienstwo p
     p = 0.0414
     distruptedsignal = signal
+    print(distruptedsignal.voltage)
     # Lista ktora bedzie zawierac indeksy poczatku oraz konca ciagu tych samych znakow
     b_e = []
     # Lista ktora bedzie zawierac losowo miejsca zaklocen sygnalu
@@ -70,7 +71,7 @@ def distruption2(signal):  # metoda zaklocajaca sygnal
                         break
             b_e.append(i)
             # Zaklocanie odbywa sie jezeli pojawi sie ciag powyzej 3 takich samych znakow
-            if (b_e[1]-b_e[0]+1) >= 4:
+            if b_e[1]-b_e[0] >= 4:
                 j = 0
                 while j < (b_e[1]-b_e[0]+1) - 3:
                     j += 1
