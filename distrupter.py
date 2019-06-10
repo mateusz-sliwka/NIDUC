@@ -27,17 +27,21 @@ def distruption(signal,algorythm):  # metoda zaklocajaca sygnal
         # Zaklocanie odbywa sie jezeli pojawi sie ciag powyzej 4 takich samych znakow
 
         ilosc = b_e[1]-b_e[0]+1    #ilosc bitow takkich samych w danym ciagu np dla 1111 ilosc =4
+
         if ilosc >= stala:  #jezeli ilosc jest wieksza niz stala do zaklocenia
+
             j = 0
             while j <= ilosc - stala:  #iterujemy po roznicy ilosci i stalej, nie rozumiem tej petli, czemu po prostu nie j=ilosc-stala?
                 j += 1
             p = p + j * 0.000012
-            p = math.ceil(p * ilosc)
+            p = math.ceil(p * ilosc) #czy to p nie bd zawsze =1, sprawdzalem dla obrazka o dl=16k i jest zawsze=1
+
             j = 0
             while j < p:
                 n_b.append(random.randint(b_e[0], b_e[1]))  #losowanie bitow do zaklocenia, czy moze wylosowac kilka razy ten sam?
+                #w sumie to ze wzgl. na p=1 losowanie bd wykonywac sie prawie zawsze tylko raz
                 j += 1 #j bedzie mialo dokladnie taka wartosc jak len(n_b)
-            for j in range(len(n_b)):   #tutaj j nie jest 0, j ma wartosc od iteracji z while wyzej, to dobrze?
+            for j in range(len(n_b)):   #tutaj j nie jest 0, j ma wartosc od iteracji z while wyzej, to dobrze? moze j trzeba wyzerowac?
                 if distruptedsignal.signal[n_b[j]] == 1:
                     distruptedsignal.signal[n_b[j]] = 0
                     distruptedsignal.voltage[n_b[j]] = 'Z'
