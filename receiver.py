@@ -7,6 +7,7 @@ import math
 import matplotlib.cm as cm
 import sender
 import numpy as np
+import time
 import collections
 
 
@@ -51,7 +52,10 @@ def signalhistogram(signal):
 
 class receiver:
     def __init__(self, puresignal, puresignaldisrupted, descrambled, algorythm, scrambled, scrambleddisrupted, tab1,
-                 tab2):
+                 tab2,time1):
+        now = time.time()
+        timer = now-time1
+
         window2 = tk.Tk()
         window2.title("Odbiorca sygnału")
         window2.geometry("1400x520")
@@ -111,6 +115,8 @@ class receiver:
             file1.write(
                 "\n\nOBRAZ WYSYLANY ZE SCRAMBLIGNIEM MA TYLE PUNKTOW PROCENTOWYCH MNIEJ ZAKLOCONYCH BITOW: " + str(
                     puresignaldisruptedresult - scramblingresult))
+            file1.write("\nJEST TO TYLE ZAKLOCONYCH BITOW MNIEJ: "+str(result-result2))
+            file1.write("\n\nPROCES TRWAL: "+str(timer)+"s.")
 
         def array_vs_array(array1, array2):  # zestawienie dwoch sygnalow, pokazanie roznic
             array2 = array2.signal
@@ -244,6 +250,8 @@ class receiver:
             round(puresignaldisruptedresult - scramblingresult, 3)) + " punktow procentowych.", width=100,
                            font=('Verdana', 15, 'bold'))
         label11.grid(row=0, column=1)
+        label12 = tk.Label(ramka5,text="Proces trwal "+str(timer)+"s",width=100,font=('Verdana',12))
+        label12.grid(row=1,column=1)
         ramka5.grid(row=0, column=0)
         ramka4.grid(row=1, column=0)
         ramka6.grid(row=1, column=2)
@@ -386,5 +394,14 @@ class receiver:
             dlugosc12.grid(row=12, column=0)
             ilosc12 = tk.Label(ramka9, text=tab2[11])
             ilosc12.grid(row=12, column=1)
+        print("\n*****************WYNIKI TRANSMISJI*****************")
+        print("ILOSC NIEZGODNYCH BITOW W NIESCRAMBOLWANYM: "+str(result)+" CZYLI "+str(
+            result * 100 / len(puresignal))+"%")
+        print("ILOSC NIEZGODNYCH BITOW W SCRAMBLOWANYM "+algorythm+": "+str(result2)+" CZYLI "+str(
+            result2 * 100 / len(puresignal))+"%")
+        print("ROZNICA WYNOSI "+str(result-result2)+" CZYLI "+str(
+           result*100/len(puresignal)-result2 * 100 / len(puresignal))+" pkt procentowych")
+
+        print("PROCES TRWAL "+str(timer)+"s")
 
         window2.mainloop()

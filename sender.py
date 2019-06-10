@@ -1,3 +1,4 @@
+import time
 import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
@@ -110,7 +111,8 @@ class sender:
                 print("Algorytm scramblowania: AES")
             print("=====================")
             window.destroy()
-            transmitter.transmitter(signal, algo)
+            now = time.time()
+            transmitter.transmitter(signal, algo,now)
 
         frame4 = tk.Frame()
         version = tk.Label(frame4, text="Scrambler sender v0.0", fg="grey", width=30, anchor="w")
