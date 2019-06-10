@@ -3,8 +3,8 @@ import random
 from Signal import Signal
 
 def distruption(signal,algorythm):  # metoda zaklocajaca sygnal
-    print("\n =====ZAKLOCANIE SYGNALU====")
-    print("Sygnal przed zakoceniem:" + ''.join(str(item) for item in signal.signal))
+    print("\n =====ZAKLOCANIE SCRAMBLOWANEGO SYGNALU====")
+
     #Początkowe prawdopodobienstwo p
     p = 0.0414
     distruptedsignal = signal
@@ -20,7 +20,7 @@ def distruption(signal,algorythm):  # metoda zaklocajaca sygnal
             if i >=len(distruptedsignal.signal) - 1:
                 break
         b_e.append(i)
-        print(b_e)
+
         stala=3 #zmienna mowiaca o tym jak dlugi ma byc ciag tych samych zankow zeby wystapilo zaklocenie
         if(algorythm=="B8ZS"):
             stala=4
@@ -55,6 +55,7 @@ def distruption(signal,algorythm):  # metoda zaklocajaca sygnal
         p = 0.0414
         i += 1
     print("Sygnal po zakloceniu:" + ''.join(str(item) for item in distruptedsignal.signal))
+    print(distruptedsignal.voltage)
     print("=====================")
     return distruptedsignal
 
@@ -101,8 +102,7 @@ def distruption2(signal,algorythm):  # metoda zaklocajaca sygnal
             n_b.clear()
             p = 0.0414
             i += 1
-        print("\n =====ZAKLOCANIE SYGNALU====")
-        print("Sygnal przed zakoceniem:" + ''.join(str(item) for item in signal))
-        print("Sygnal po zaklocenie:" + ''.join(str(item) for item in distruptedsignal))
+        print("\n =====ZAKLOCANIE NIESCRAMBLOWANEGO SYGNALU====")
+        print("Sygnal po zakloceniU:" + ''.join(str(item) for item in distruptedsignal))
         print("=====================")
         return distruptedsignal

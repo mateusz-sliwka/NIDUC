@@ -4,8 +4,6 @@ from Signal import Signal
 def scramble(signal, algorythm):
     scrambledsignal = Signal(signal)
     print("\n =====SCRAMBLOWANIE SYGNALU====")
-    print("Sygnal przed scramblingiem:" + ''.join(str(item) for item in signal))
-    print (scrambledsignal.voltage)
     print("Sygnal scramblowany algorytmem:"+algorythm)
     if algorythm == "B8ZS":
         i = 0
