@@ -35,7 +35,6 @@ def distruption(signal,algorythm):  # metoda zaklocajaca sygnal
                 j += 1
             p = p + j * 0.000012
             p = math.ceil(p * ilosc) #czy to p nie bd zawsze =1, sprawdzalem dla obrazka o dl=16k i jest zawsze=1
-
             j = 0
             while j < p:
                 n_b.append(random.randint(b_e[0], b_e[1]))  #losowanie bitow do zaklocenia, czy moze wylosowac kilka razy ten sam?
@@ -75,19 +74,20 @@ def distruption2(signal,algorythm):  # metoda zaklocajaca sygnal
             b_e.append(i)
             while distruptedsignal[i] == distruptedsignal[i+1] and distruptedsignal[i] == 0:
                     i += 1
-                    if i > len(distruptedsignal) - 2:
+                    if i >=len(distruptedsignal) - 1:
                         break
             b_e.append(i)
             stala = 3
             if (algorythm == "B8ZS"):
                 stala = 4
-            # Zaklocanie odbywa sie jezeli pojawi sie ciag powyzej 3 takich samych znakow
-            if (b_e[1]-b_e[0]+1) >= stala:
+            ilosc = b_e[1] - b_e[0] + 1
+                # Zaklocanie odbywa sie jezeli pojawi sie ciag powyzej 3 takich samych znakow
+            if ilosc >= stala:
                 j = 0
-                while j < (b_e[1]-b_e[0]+1) - stala:
+                while j <=ilosc - stala:
                     j += 1
                 p = p + j * 0.000012
-                p = math.ceil(p * (b_e[1] - b_e[0]+1))
+                p = math.ceil(p * ilosc)
                 j = 0
                 while j < p:
                     n_b.append(random.randint(b_e[0], b_e[1]))
