@@ -15,7 +15,7 @@ def distruption(signal,algorythm):  # metoda zaklocajaca sygnal
     i = 0
     while i < len(distruptedsignal.signal) - 1:
         b_e.append(i)
-        while distruptedsignal.signal[i] == distruptedsignal.signal[i + 1] and distruptedsignal.voltage[i] == 'Z':
+        while distruptedsignal.voltage[i] == distruptedsignal.voltage[i + 1] and distruptedsignal.voltage[i] == 'Z':
             i += 1
             if i >=len(distruptedsignal.signal) - 1:
                 break
@@ -29,7 +29,8 @@ def distruption(signal,algorythm):  # metoda zaklocajaca sygnal
         ilosc = b_e[1]-b_e[0]+1    #ilosc bitow takkich samych w danym ciagu np dla 1111 ilosc =4
 
         if ilosc >= stala:  #jezeli ilosc jest wieksza niz stala do zaklocenia
-
+            print(ilosc)
+            print(stala)
             j = 0
             while j <= ilosc - stala:  #iterujemy po roznicy ilosci i stalej, nie rozumiem tej petli, czemu po prostu nie j=ilosc-stala?
                 j += 1

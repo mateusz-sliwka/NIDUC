@@ -11,7 +11,6 @@ import collections
 
 
 def stringhistogram(signal):
-    print(type(signal))
     b_e = []
     i = 0
     while i < len(signal) - 1:
