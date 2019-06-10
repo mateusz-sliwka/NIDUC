@@ -22,7 +22,7 @@ def distruption(signal):  # metoda zaklocajaca sygnal
         b_e.append(i)
         print(b_e)
         # Zaklocanie odbywa sie jezeli pojawi sie ciag powyzej 4 takich samych znakow
-        if b_e[1] - b_e[0]+1 >= 4:
+        if b_e[1] - b_e[0] >= 4:
             j = 0
             while j <= b_e[1] - b_e[0] - 4:
                 j += 1
