@@ -110,3 +110,7 @@ fabric.properties
 *.exe
 *.out
 *.app
+imgs/received_puresignal.png
+imgs/received_withoutscr.png
+imgs/received_withscrl.png
+*.png
