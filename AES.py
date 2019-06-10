@@ -1,4 +1,5 @@
 import random
+import numpy as np
 length = 0
 Sbox = (
     0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5, 0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76,
@@ -48,20 +49,49 @@ Rcon = (
 )
 
 
+def move(vector,how_many,side):
+    if side == 'LEFT':
+        while how_many > 0:
+            tmp = []
+            for item in vector:
+                tmp.append(item)
+            for i in range(len(vector)-1):
+                if i == 0:
+                    vector[len(vector) - 1] = tmp[i]
+                    vector[i] = tmp[i+1]
+                else:
+                    vector[i] = tmp[i+1]
+            how_many -=1
+    else:
+        while how_many > 0:
+            tmp = vector
+            for i in range(len(vector)- 1):
+                if i == 0:
+                    vector[len(vector) - 1 ] = tmp[len(vector) - 2]
+                    vector[i] = tmp[len(vector) - 1]
+                else:
+                    vector[i] = tmp[i-1]
+            how_many -=1
+    return vector
 def text2matrix(text2):
     matrix = []
-    text=0
     print('typ to: ')
     print(type(text2))
 
     # for i in range (len(text2)):
     #     text+=text2[i]*pow(10,len-1-i)
     for i in range(16):
+        if isinstance(text2,int):
             byte = text2 >> (8 * (15 - i)) & 0xFF
-            if i % 4 == 0:
-                matrix.append([byte])
-            else:
-                matrix[i//4].append(byte)
+        else:
+            byte = move(text2,8*(15-i),'RIGHT')
+            byte = np.logical_and(byte,0xFF)
+            byte = byte.tolist()
+            print(type(byte))
+        if i % 4 == 0:
+            matrix.append([byte])
+        else:
+            matrix[i // 4].append(byte)
     return matrix
 
 
@@ -214,4 +244,3 @@ class AES:
             s[i][3] ^= v
 
         self.__mix_columns(s)
-
