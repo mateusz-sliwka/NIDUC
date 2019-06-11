@@ -76,7 +76,7 @@ def move(vector,how_many,side):
 def text2matrix(text2):
 
     matrix = []
-
+    print(text2)
     # for i in range (len(text2)):
     #     text+=text2[i]*pow(10,len-1-i)
     for i in range(16):
@@ -86,6 +86,11 @@ def text2matrix(text2):
             byte = move(text2,8*(15-i),'RIGHT')
             byte = np.logical_and(byte,0xFF)
             byte = byte.tolist()
+            for x in range (len(byte)):
+                if(byte[x]):
+                    byte[x]=1
+                else:
+                    byte[x]=0
 
         if i % 4 == 0:
             matrix.append([byte])
@@ -149,6 +154,7 @@ class AES:
 
         self.plain_state = text2matrix(plaintext)
 
+        print(self.plain_state)
         self.__add_round_key(self.plain_state, self.round_keys[:4])
 
         for i in range(1, 10):
@@ -265,3 +271,4 @@ class AES:
             s[i][3] ^= v
 
         self.__mix_columns(s)
+AES("100000100101010101")
