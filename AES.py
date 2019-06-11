@@ -74,9 +74,8 @@ def move(vector,how_many,side):
             how_many -=1
     return vector
 def text2matrix(text2):
+
     matrix = []
-    print('typ to: ')
-    print(type(text2))
 
     # for i in range (len(text2)):
     #     text+=text2[i]*pow(10,len-1-i)
@@ -87,7 +86,7 @@ def text2matrix(text2):
             byte = move(text2,8*(15-i),'RIGHT')
             byte = np.logical_and(byte,0xFF)
             byte = byte.tolist()
-            print(type(byte))
+
         if i % 4 == 0:
             matrix.append([byte])
         else:
@@ -105,6 +104,7 @@ def matrix2text(matrix):
     if len(text)< length:
         for i in range(length - len(text)):
             text= '0'+text
+
     return text
     global decrypted
 
@@ -146,8 +146,7 @@ class AES:
     def encrypt(self, plaintext):
         global length
         length = len(plaintext)
-        print("typ:")
-        print(type(plaintext))
+
         self.plain_state = text2matrix(plaintext)
 
         self.__add_round_key(self.plain_state, self.round_keys[:4])
@@ -161,9 +160,16 @@ class AES:
 
         return matrix2text(self.plain_state)
     def decrypt(self, ciphertext):
+        print("Wchodze do decrypt")
+        print("\nCiphertext: ")
+        print(type(ciphertext))
+        print(ciphertext)
         ciphertext = int(ciphertext)
-
         self.cipher_state = text2matrix(ciphertext)
+        print("\nWywoluje text2matrix(ciphertext)")
+        print("Wynik (self.cipher_state): ")
+        print(type(self.cipher_state))
+        print(self.cipher_state)
 
         self.__add_round_key(self.cipher_state, self.round_keys[40:])
         self.__inv_shift_rows(self.cipher_state)
@@ -174,9 +180,24 @@ class AES:
 
         self.__add_round_key(self.cipher_state, self.round_keys[:4])
 
+        print("\nPo wywloaniach addroundkey, invshiftrows, invsubbytes cipherstate ma postac: ")
+        print(type(self.cipher_state))
+        print(self.cipher_state)
+
+        print("\nPo wywloaniu matrix2text(self.cipher_state): ")
+        print(type(matrix2text(self.cipher_state)))
+        print(matrix2text(self.cipher_state))
+
         return matrix2text(self.cipher_state)
 
     def __add_round_key(self, s, k):
+        for i in range(4):
+            for j in range(4):
+                if s[i][j]:
+                    s[i][j]=1
+                else:
+                    s[i][j]=0
+
         for i in range(4):
             for j in range(4):
                 s[i][j] ^= k[i][j]

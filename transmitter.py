@@ -8,8 +8,8 @@ import receiver
 class transmitter:
     def __init__(self, signal, algorythm,now):
         if(algorythm=="AES"):
-            print("AES")
             afteraes = AES.AES(signal)
+            print("\nWyniki zwrocone do transmittera: ")
             print("Encrypted: ")
             print(afteraes.encrypted)
             print("Decrypted: ")
