@@ -1,19 +1,29 @@
-import AES
+import random
+
 import scrambler
 import descrambler
 import distrupter
+import AES2
 import receiver
 
 
 class transmitter:
     def __init__(self, signal, algorythm,now):
         if(algorythm=="AES"):
-            afteraes = AES.AES(signal)
-            print("\nWyniki zwrocone do transmittera: ")
-            print("Encrypted: ")
-            print(afteraes.encrypted)
-            print("Decrypted: ")
-            print(afteraes.decrypted)
+            napis=""
+            for x in range(len(signal)):
+                napis+=str(signal[x])
+                if (signal[x]==0):
+                    napis+="0"
+            print(napis)
+            print(type(napis))
+            key = random.randint(0x00, 0xFF)
+            cipher = AES2.AES(key)
+            print(type(napis))
+            encrypted = cipher.encrypt(napis)
+            decrypted = cipher.decrypt(encrypted)
+            print(decrypted)
+
         else:
             pure_disrupted = distrupter.distruption2(signal, algorythm)  # zaklocenie sygnalu wysylanego bez scramblera
             scrambled = scrambler.scramble(signal, algorythm)  # zescramblowanie sygnalu
