@@ -7,14 +7,55 @@ import math
 import matplotlib.cm as cm
 import sender
 import numpy as np
+import time
 import collections
 
 
+def stringhistogram(signal):
+    b_e = []
+    i = 0
+    while i < len(signal) - 1:
+        y = 1
+        while signal[i] == signal[i + 1] and signal[i] == 0:
+            i = i + 1
+            y += 1
+            if i > len(signal) - 2:
+                break
+        if (y > 1):
+            b_e.append(y)
+        i += 1
+    x = 0
+    b_e.sort(reverse=TRUE)
+    counter = collections.Counter(b_e)
+    return counter
+
+
+def signalhistogram(signal):
+    signal = signal.voltage
+    b_e = []
+    i = 0
+    while i < len(signal) - 1:
+        y = 1
+        while signal[i] == signal[i + 1] and signal[i] == 'Z':
+            i = i + 1
+            y += 1
+            if i > len(signal) - 2:
+                break
+        if (y > 1):
+            b_e.append(y)
+        i += 1
+    x = 0
+    b_e.sort(reverse=TRUE)
+    counter = collections.Counter(b_e)
+    return counter
+
+
 class receiver:
-    def __init__(self, puresignal, puresignaldisrupted, descrambled, algorythm, scrambled, scrambleddisrupted):
-        print("dlugosci")
-        print(len(scrambled.signal))
-        print(len(descrambled.voltage))
+    def __init__(self, puresignal, puresignaldisrupted, descrambled, algorythm, scrambled, scrambleddisrupted, tab1,
+                 tab2,time1):
+        now = time.time()
+        timer = now-time1
+
         window2 = tk.Tk()
         window2.title("Odbiorca sygnału")
         window2.geometry("1400x520")
@@ -35,18 +76,18 @@ class receiver:
             file1.write("NADAWANY SYGNAŁ (" + str(len(puresignal) * len(puresignal)) + "bitow):\n")
             file1.write(str(puresignal))
             file1.write("\n\n\nSYGNAL ZE SCRAMBLINGIEM:\n ")
-            for x in range (len(scrambled.signal)):
-                file1.write(str(scrambled.signal[x])+",")
+            for x in range(len(scrambled.signal)):
+                file1.write(str(scrambled.signal[x]) + ",")
             file1.write("\n")
-            for x in range (len(scrambled.voltage)):
-                file1.write(str(scrambled.voltage[x])+",")
+            for x in range(len(scrambled.voltage)):
+                file1.write(str(scrambled.voltage[x]) + ",")
             file1.write("\n\n\nSYGNAL ZE SCRAMBLINGIEM ZAKLOCONY:\n ")
             for x in range(len(scrambleddisrupted.signal)):
                 file1.write(str(scrambleddisrupted.signal[x]) + ",")
             file1.write("\n")
             for x in range(len(scrambleddisrupted.voltage)):
                 file1.write(str(scrambleddisrupted.voltage[x]) + ",")
-            file1.write("\n\n\nODEBRANY ODSCRAMBLOWANY SYGNAL\n")
+            file1.write("\n\n\nODEBRANY ZDESCRAMBLOWANY SYGNAL\n")
             for x in range(len(descrambled.signal)):
                 file1.write(str(descrambled.signal[x]) + ",")
             file1.write("\n")
@@ -60,22 +101,22 @@ class receiver:
             file1.write("\nLICZBA I DLUGOSCI CIAGOW TYCH SAMYCH BITOW W SYGNALE BEZ SCRAMBLINGU: ")
             tab1 = list(stringhistogram(puresignaldisrupted).keys())
             tab2 = list(stringhistogram(puresignaldisrupted).values())
-            for x in range (len(tab1)):
-                file1.write("("+str(tab1[x])+","+str(tab2[x])+"),")
-
+            for x in range(len(tab1)):
+                file1.write("(" + str(tab1[x]) + "," + str(tab2[x]) + "),")
 
             file1.write("\n\nPROCENT NIEZGODNYCH BITOW W SYGNALE ZE SCRAMBLINGIEM: " + str(result2))
             file1.write("\nPROCENT NIEZGODNYCH BITOW W SYGNALU ZE SCRAMLBINGIEM: " + str(scramblingresult))
             file1.write("\nLICZBA I DLUGOSCI CIAGOW TYCH SAMYCH BITOW W SYGNALE ZE SCRAMBLINGIEM: ")
-            tab1 = list(signalhistogram(scrambleddisrupted).keys())
-            tab2 = list(signalhistogram(scrambleddisrupted).values())
-            for x in range (len(tab1)):
+            tab1 = list(signalhistogram(descrambled).keys())
+            tab2 = list(signalhistogram(descrambled).values())
+            for x in range(len(tab1)):
                 file1.write("(" + str(tab1[x]) + "," + str(tab2[x]) + "),")
 
-
-            file1.write("\n\nOBRAZ WYSYLANY ZE SCRAMBLIGNIEM MA TYLE PUNKTOW PROCENTOWYCH MNIEJ ZAKLOCONYCH BITOW: " + str(
-                puresignaldisruptedresult-scramblingresult))
-
+            file1.write(
+                "\n\nOBRAZ WYSYLANY ZE SCRAMBLIGNIEM MA TYLE PUNKTOW PROCENTOWYCH MNIEJ ZAKLOCONYCH BITOW: " + str(
+                    puresignaldisruptedresult - scramblingresult))
+            file1.write("\nJEST TO TYLE ZAKLOCONYCH BITOW MNIEJ: "+str(result-result2))
+            file1.write("\n\nPROCES TRWAL: "+str(timer)+"s.")
 
         def array_vs_array(array1, array2):  # zestawienie dwoch sygnalow, pokazanie roznic
             array2 = array2.signal
@@ -123,10 +164,9 @@ class receiver:
             label.grid(column=0, row=1, sticky=tk.N)
 
         def receive_puresignaldisrupted(value):  # wyplenienie miejsca na signal zaklocony niescramblowany
-
+            stringhistogram(value)
             for i in range(len(value)):
                 value[i] = int(value[i])
-
 
             plt.imsave('imgs/received_withoutscr.png',
                        np.array(value).reshape(int(math.sqrt(len(value))), int(math.sqrt(len(value)))), cmap=cm.gray)
@@ -137,7 +177,7 @@ class receiver:
             label2.grid(column=0, row=1, sticky=tk.N)
 
         def receive_descrambled(value2):  # wypelnienie miejsca na sygnal po descramblingu
-
+            signalhistogram(value2)
             value = value2.signal
             for i in range(len(value)):
                 value[i] = int(value[i])
@@ -149,44 +189,6 @@ class receiver:
             label3 = Label(ramka3, image=photo, borderwidth=2, relief="groove")
             label3.image = photo
             label3.grid(column=0, row=1, sticky=tk.N)
-
-        def stringhistogram(signal):
-
-            b_e = []
-            i = 0
-            while i < len(signal) - 1:
-                y = 1
-                while signal[i] == signal[i + 1] and signal[i] == 0:
-                    i = i + 1
-                    y += 1
-                    if i > len(signal) - 2:
-                        break
-                if (y > 1):
-                    b_e.append(y)
-                i += 1
-            x = 0
-            b_e.sort(reverse=TRUE)
-            counter = collections.Counter(b_e)
-            return counter
-
-        def signalhistogram(signal):
-            signal=signal.voltage
-            b_e = []
-            i = 0
-            while i < len(signal) - 1:
-                y = 1
-                while signal[i] == signal[i + 1] and signal[i] == 'Z':
-                    i = i + 1
-                    y += 1
-                    if i > len(signal) - 2:
-                        break
-                if (y > 1):
-                    b_e.append(y)
-                i += 1
-            x = 0
-            b_e.sort(reverse=TRUE)
-            counter = collections.Counter(b_e)
-            return counter
 
         fill_empty()
         receive_puresignal(puresignal)
@@ -245,9 +247,11 @@ class receiver:
         button2 = tk.Button(ramka5, text="Nadaj nowy sygnał", command=lambda: newprocess())
         button2.grid(row=1, column=0, pady=5)
         label11 = tk.Label(ramka5, text="Scrambling poprawil skutecznosc o " + str(
-            round(puresignaldisruptedresult - scramblingresult,3)) + " punktow procentowych czyli "+str(
-            round(puresignaldisruptedresult/scramblingresult,3))+"raza.", width=100, font=('Verdana', 15, 'bold'))
+            round(puresignaldisruptedresult - scramblingresult, 3)) + " punktow procentowych.", width=100,
+                           font=('Verdana', 15, 'bold'))
         label11.grid(row=0, column=1)
+        label12 = tk.Label(ramka5,text="Proces trwal "+str(timer)+"s",width=100,font=('Verdana',12))
+        label12.grid(row=1,column=1)
         ramka5.grid(row=0, column=0)
         ramka4.grid(row=1, column=0)
         ramka6.grid(row=1, column=2)
@@ -258,69 +262,68 @@ class receiver:
         tytul2 = tk.Label(ramka7, text="Ilosc wystapien")
         tytul2.grid(row=0, column=1)
 
+        tab3 = list(stringhistogram(puresignaldisrupted).keys())
+        tab4 = list(stringhistogram(puresignaldisrupted).values())
 
-        tab1 = list(stringhistogram(puresignaldisrupted).keys())
-        tab2 = list(stringhistogram(puresignaldisrupted).values())
-
-        if (len(tab1)>0):
-            dlugosc1 = tk.Label(ramka7, text=tab1[0])
+        if (len(tab3) > 0):
+            dlugosc1 = tk.Label(ramka7, text=tab3[0])
             dlugosc1.grid(row=1, column=0)
-            ilosc1 = tk.Label(ramka7, text=tab2[0])
+            ilosc1 = tk.Label(ramka7, text=tab4[0])
             ilosc1.grid(row=1, column=1)
-        if (len(tab1)>1):
-            dlugosc2 = tk.Label(ramka7, text=tab1[1])
+        if (len(tab3) > 1):
+            dlugosc2 = tk.Label(ramka7, text=tab3[1])
             dlugosc2.grid(row=2, column=0)
-            ilosc2 = tk.Label(ramka7, text=tab2[1])
+            ilosc2 = tk.Label(ramka7, text=tab4[1])
             ilosc2.grid(row=2, column=1)
-        if (len(tab1)>2):
-            dlugosc3 = tk.Label(ramka7, text=tab1[2])
+        if (len(tab3) > 2):
+            dlugosc3 = tk.Label(ramka7, text=tab3[2])
             dlugosc3.grid(row=3, column=0)
-            ilosc3 = tk.Label(ramka7, text=tab2[2])
+            ilosc3 = tk.Label(ramka7, text=tab4[2])
             ilosc3.grid(row=3, column=1)
-        if (len(tab1)>3):
-            dlugosc4 = tk.Label(ramka7, text=tab1[3])
+        if (len(tab3) > 3):
+            dlugosc4 = tk.Label(ramka7, text=tab3[3])
             dlugosc4.grid(row=4, column=0)
-            ilosc4 = tk.Label(ramka7, text=tab2[3])
+            ilosc4 = tk.Label(ramka7, text=tab4[3])
             ilosc4.grid(row=4, column=1)
-        if (len(tab1)>4):
-            dlugosc5 = tk.Label(ramka7, text=tab1[4])
+        if (len(tab3) > 4):
+            dlugosc5 = tk.Label(ramka7, text=tab3[4])
             dlugosc5.grid(row=5, column=0)
-            ilosc5 = tk.Label(ramka7, text=tab2[4])
+            ilosc5 = tk.Label(ramka7, text=tab4[4])
             ilosc5.grid(row=5, column=1)
-        if (len(tab1)>5):
-            dlugosc6 = tk.Label(ramka7, text=tab1[5])
+        if (len(tab3) > 5):
+            dlugosc6 = tk.Label(ramka7, text=tab3[5])
             dlugosc6.grid(row=6, column=0)
-            ilosc6 = tk.Label(ramka7, text=tab2[5])
+            ilosc6 = tk.Label(ramka7, text=tab4[5])
             ilosc6.grid(row=6, column=1)
-        if (len(tab1)>6):
-            dlugosc7 = tk.Label(ramka7, text=tab1[6])
+        if (len(tab3) > 6):
+            dlugosc7 = tk.Label(ramka7, text=tab3[6])
             dlugosc7.grid(row=7, column=0)
-            ilosc7 = tk.Label(ramka7, text=tab2[6])
+            ilosc7 = tk.Label(ramka7, text=tab4[6])
             ilosc7.grid(row=7, column=1)
-        if (len(tab1)>7):
-            dlugosc8 = tk.Label(ramka7, text=tab1[7])
+        if (len(tab3) > 7):
+            dlugosc8 = tk.Label(ramka7, text=tab3[7])
             dlugosc8.grid(row=8, column=0)
-            ilosc8 = tk.Label(ramka7, text=tab2[7])
+            ilosc8 = tk.Label(ramka7, text=tab4[7])
             ilosc8.grid(row=8, column=1)
-        if (len(tab1)>8):
-            dlugosc9 = tk.Label(ramka7, text=tab1[8])
+        if (len(tab3) > 8):
+            dlugosc9 = tk.Label(ramka7, text=tab3[8])
             dlugosc9.grid(row=9, column=0)
-            ilosc9 = tk.Label(ramka7, text=tab2[8])
+            ilosc9 = tk.Label(ramka7, text=tab4[8])
             ilosc9.grid(row=9, column=1)
-        if (len(tab1)>9):
-            dlugosc10 = tk.Label(ramka7, text=tab1[9])
+        if (len(tab3) > 9):
+            dlugosc10 = tk.Label(ramka7, text=tab3[9])
             dlugosc10.grid(row=10, column=0)
-            ilosc10 = tk.Label(ramka7, text=tab2[9])
+            ilosc10 = tk.Label(ramka7, text=tab4[9])
             ilosc10.grid(row=10, column=1)
-        if (len(tab1)>10):
-            dlugosc11 = tk.Label(ramka7, text=tab1[10])
+        if (len(tab3) > 10):
+            dlugosc11 = tk.Label(ramka7, text=tab3[10])
             dlugosc11.grid(row=11, column=0)
-            ilosc11 = tk.Label(ramka7, text=tab2[10])
+            ilosc11 = tk.Label(ramka7, text=tab4[10])
             ilosc11.grid(row=11, column=1)
-        if (len(tab1)>11):
-            dlugosc12 = tk.Label(ramka7, text=tab1[11])
+        if (len(tab3) > 11):
+            dlugosc12 = tk.Label(ramka7, text=tab3[11])
             dlugosc12.grid(row=12, column=0)
-            ilosc12 = tk.Label(ramka7, text=tab2[11])
+            ilosc12 = tk.Label(ramka7, text=tab4[11])
             ilosc12.grid(row=12, column=1)
 
         ramka8.grid(row=1, column=4)
@@ -331,68 +334,74 @@ class receiver:
         tytul2 = tk.Label(ramka9, text="Ilosc wystapien")
         tytul2.grid(row=0, column=1)
 
-        tab1 = list(signalhistogram(scrambled).keys())
-        tab2 = list(signalhistogram(scrambled).values())
-
-        if (len(tab1)>0):
+        if (len(tab1) > 0):
             dlugosc1 = tk.Label(ramka9, text=tab1[0])
             dlugosc1.grid(row=1, column=0)
             ilosc1 = tk.Label(ramka9, text=tab2[0])
             ilosc1.grid(row=1, column=1)
-        if (len(tab1)>1):
+        if (len(tab1) > 1):
             dlugosc2 = tk.Label(ramka9, text=tab1[1])
             dlugosc2.grid(row=2, column=0)
             ilosc2 = tk.Label(ramka9, text=tab2[1])
             ilosc2.grid(row=2, column=1)
-        if (len(tab1)>2):
+        if (len(tab1) > 2):
             dlugosc3 = tk.Label(ramka9, text=tab1[2])
             dlugosc3.grid(row=3, column=0)
             ilosc3 = tk.Label(ramka9, text=tab2[2])
             ilosc3.grid(row=3, column=1)
-        if (len(tab1)>3):
+        if (len(tab1) > 3):
             dlugosc4 = tk.Label(ramka9, text=tab1[3])
             dlugosc4.grid(row=4, column=0)
             ilosc4 = tk.Label(ramka9, text=tab2[3])
             ilosc4.grid(row=4, column=1)
-        if (len(tab1)>4):
+        if (len(tab1) > 4):
             dlugosc5 = tk.Label(ramka9, text=tab1[4])
             dlugosc5.grid(row=5, column=0)
             ilosc5 = tk.Label(ramka9, text=tab2[4])
             ilosc5.grid(row=5, column=1)
-        if (len(tab1)>5):
+        if (len(tab1) > 5):
             dlugosc6 = tk.Label(ramka9, text=tab1[5])
             dlugosc6.grid(row=6, column=0)
             ilosc6 = tk.Label(ramka9, text=tab2[5])
             ilosc6.grid(row=6, column=1)
-        if (len(tab1)>6):
+        if (len(tab1) > 6):
             dlugosc7 = tk.Label(ramka9, text=tab1[6])
             dlugosc7.grid(row=7, column=0)
             ilosc7 = tk.Label(ramka9, text=tab2[6])
             ilosc7.grid(row=7, column=1)
-        if (len(tab1)>7):
+        if (len(tab1) > 7):
             dlugosc8 = tk.Label(ramka9, text=tab1[7])
             dlugosc8.grid(row=8, column=0)
             ilosc8 = tk.Label(ramka9, text=tab2[7])
             ilosc8.grid(row=8, column=1)
-        if (len(tab1)>8):
+        if (len(tab1) > 8):
             dlugosc9 = tk.Label(ramka9, text=tab1[8])
             dlugosc9.grid(row=9, column=0)
             ilosc9 = tk.Label(ramka9, text=tab2[8])
             ilosc9.grid(row=9, column=1)
-        if (len(tab1)>9):
+        if (len(tab1) > 9):
             dlugosc10 = tk.Label(ramka9, text=tab1[9])
             dlugosc10.grid(row=10, column=0)
             ilosc10 = tk.Label(ramka9, text=tab2[9])
             ilosc10.grid(row=10, column=1)
-        if (len(tab1)>10):
+        if (len(tab1) > 10):
             dlugosc11 = tk.Label(ramka9, text=tab1[10])
             dlugosc11.grid(row=11, column=0)
             ilosc11 = tk.Label(ramka9, text=tab2[10])
             ilosc11.grid(row=11, column=1)
-        if (len(tab1)>11):
+        if (len(tab1) > 11):
             dlugosc12 = tk.Label(ramka9, text=tab1[11])
             dlugosc12.grid(row=12, column=0)
             ilosc12 = tk.Label(ramka9, text=tab2[11])
             ilosc12.grid(row=12, column=1)
+        print("\n*****************WYNIKI TRANSMISJI*****************")
+        print("ILOSC NIEZGODNYCH BITOW W NIESCRAMBOLWANYM: "+str(result)+" CZYLI "+str(
+            result * 100 / len(puresignal))+"%")
+        print("ILOSC NIEZGODNYCH BITOW W SCRAMBLOWANYM "+algorythm+": "+str(result2)+" CZYLI "+str(
+            result2 * 100 / len(puresignal))+"%")
+        print("ROZNICA WYNOSI "+str(result-result2)+" CZYLI "+str(
+           result*100/len(puresignal)-result2 * 100 / len(puresignal))+" pkt procentowych")
+
+        print("PROCES TRWAL "+str(timer)+"s")
 
         window2.mainloop()

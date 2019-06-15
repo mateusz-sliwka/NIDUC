@@ -1,3 +1,3 @@
 import sender
 
-start = sender.sender()
+sender.sender()
