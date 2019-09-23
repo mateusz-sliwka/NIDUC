@@ -201,7 +201,7 @@ class receiver:
         author = tk.Label(ramka0, text="", fg="grey", width=33)
         author.grid(row=0, column=1, sticky=tk.NW)
 
-        author = tk.Label(ramka0, text="Karasek, Kamieniecki, Śliwka", fg="grey", anchor="e", width=32)
+        author = tk.Label(ramka0, text="Kamieniecki, Śliwka", fg="grey", anchor="e", width=32)
         author.grid(row=0, column=4, sticky=tk.NW)
 
         label1 = tk.Label(ramka1, text="Przesyłany obraz")

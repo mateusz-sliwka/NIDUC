@@ -5,7 +5,7 @@ import descrambler
 import distrupter
 import AES2
 import receiver
-import keras
+
 
 
 class transmitter:
