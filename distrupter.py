@@ -3,7 +3,6 @@ import random
 
 
 def distruption(signal, algorythm):  # metoda zaklocajaca sygnal
-    print("\n =====ZAKLOCANIE SCRAMBLOWANEGO SYGNALU====")
 
     # Początkowe prawdopodobienstwo p
     p = 0.0414
@@ -55,9 +54,7 @@ def distruption(signal, algorythm):  # metoda zaklocajaca sygnal
         n_b.clear()
         p = 0.0414
         i += 1
-    print("Sygnal po zakloceniu:" + ''.join(str(item) for item in distruptedsignal.signal))
-    print(distruptedsignal.voltage)
-    print("=====================")
+
     return distruptedsignal
 
 
@@ -103,7 +100,6 @@ def distruption2(signal, algorythm):  # metoda zaklocajaca sygnal
         n_b.clear()
         p = 0.0414
         i += 1
-    print("\n =====ZAKLOCANIE NIESCRAMBLOWANEGO SYGNALU====")
-    print("Sygnal po zakloceniU:" + ''.join(str(item) for item in distruptedsignal))
-    print("=====================")
+
+
     return distruptedsignal

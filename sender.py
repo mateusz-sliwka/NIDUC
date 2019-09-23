@@ -112,7 +112,8 @@ class sender:
             print("=====================")
             window.destroy()
             now = time.time()
-            transmitter.transmitter(signal, algo,now)
+            transmitter.transmitter(signal, "B8ZS",now)
+
 
         frame4 = tk.Frame()
         version = tk.Label(frame4, text="Scrambler sender v0.0", fg="grey", width=30, anchor="w")

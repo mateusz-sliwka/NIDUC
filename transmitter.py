@@ -5,10 +5,18 @@ import descrambler
 import distrupter
 import AES2
 import receiver
+import keras
 
 
 class transmitter:
     def __init__(self, signal, algorythm,now):
+        print("String: ")
+        napis=""
+        print(type(signal))
+        for x in range (len(signal)):
+            napis+=str(signal[x])
+        print(napis)
+
         if(algorythm=="AES"):
             napis=""
             for x in range(len(signal)):

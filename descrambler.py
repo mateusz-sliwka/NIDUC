@@ -3,7 +3,7 @@ from Signal import Signal
 
 
 def descramble(signal, algorythm):
-    print("\n =====DESCRAMBLOWANIE SYGNALU====")
+
     descrambledsignal = signal
     if algorythm == "B8ZS":
         i = 0
@@ -34,7 +34,5 @@ def descramble(signal, algorythm):
             descrambledsignal.signal[i] = 1
         else:
             descrambledsignal.signal[i] = 0
-    print("Sygnal po descramblingu:" + ''.join(str(item) for item in descrambledsignal.signal))
-    print(descrambledsignal.voltage)
-    print("=====================")
+
     return descrambledsignal
